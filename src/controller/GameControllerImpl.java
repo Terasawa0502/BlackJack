@@ -1,37 +1,17 @@
 package controller;
 
-import data.Card;
-import data.Dealer;
-import data.Deck;
-import data.Player;
 import data.model.GameModel;
+import util.*;
 import ui.GameView;
-import util.Constant;
 
-public class GameControllerImpl implements GameController{
+public class GameControllerImpl implements GameController, GameView.OnUserInputCallback{
     // Game表示用
     private GameView gameView;
     //Gameデータ管理用
     private GameModel gameModel;
-    //プレイヤー
-    private Player player;
-    //ディーラー
-    private Dealer dealer;
-    //デッキ
-    private Deck deck;
-    //カード
-    private Card card;
     public GameControllerImpl(GameView view, GameModel model) {
         gameView = view;
         gameModel = model;
-        //プレイヤー作成//
-        this.player = new Player();
-        //ディーラー作成//
-        this.dealer = new Dealer();
-        //デッキ作成//
-        this.deck = new Deck();
-        //カード作成//
-        this.card = new Card();
     }
 
     /**
@@ -40,12 +20,7 @@ public class GameControllerImpl implements GameController{
     @Override
     public void startUp() {
         // TODO: タイトル画面表示(Viewの役割)
-        gameView.gameInfoPrint(Constant.SEPARATOR_STR);
-        gameView.gameInfoPrint(Constant.WELCOME);
-        gameView.gameInfoPrint(Constant.SEPARATOR_STR);
-        gameView.gameInfoPrint(Constant.EMPTY);
-        gameView.gameInfoPrint(Constant.GAME_START);
-        gameView.gameInfoPrint(Constant.EMPTY);
+        gameView.displayTopScreen(this);
     }
 
     /**
@@ -53,9 +28,25 @@ public class GameControllerImpl implements GameController{
      */
     @Override
     public void startGame() {
-        System.out.println(player.getMoney());
-        gameView.gameInfoPrint(Constant.BET_MONEY);
-        // TODO: ユーザの入力(Viewの役割)
+        // gameView.なんとかメソッド(this)
+        // gameView playerでなんとか
+        // TODO: ユーザの入力(賭ける処理)
+        // TODO: ユーザの入力(カードを配る、手札を表示する)
+        // TODO: ユーザの入力(賭ける処理)
+        // TODO: ユーザの入力(勝負判定)
+        // TODO: ユーザの入力(賭け金の払い戻し)
         // TODO: 次に何をさせるのか判断する(Controllerの役割)
+    }
+
+    @Override
+    public void selectTopScreenItems(GameView.TopScreenItem item) {
+        // TODO: TOP画面でユーザが選択した項目によって次の処理をする
+        if (item == GameView.TopScreenItem.GAME_START) {
+            // START
+            startGame();
+        } else if (item == GameView.TopScreenItem.GAME_FINISH) {
+            // FINISH
+            // TODO: 終了処理
+        }
     }
 }

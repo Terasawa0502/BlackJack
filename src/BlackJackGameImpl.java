@@ -19,7 +19,6 @@ public class BlackJackGameImpl implements BlackJackGame{
         onFinishListener = listener;
         //ゲーム開始
         gameController.startUp();
-        gameController.startGame();
     }
 
     @Override

@@ -1,9 +1,26 @@
 package ui;
 
 public interface GameView {
+
     /**
-     * コンソールに文字を出力させる
-     * @param
+     * TOP画面表示
      */
-    void gameInfoPrint(String word);
+    void displayTopScreen(OnUserInputCallback callback);
+
+    /**
+     * ユーザー入力用コールバック
+     */
+    interface  OnUserInputCallback{
+        void selectTopScreenItems(TopScreenItem item);
+    }
+
+    /**
+     * TOP画面選択項目
+     */
+    enum TopScreenItem{
+        GAME_START, //ゲーム開始
+        GAME_FINISH //ゲーム終了
+    }
+
+
 }

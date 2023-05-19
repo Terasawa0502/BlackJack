@@ -7,6 +7,7 @@ public class Main {
         new BlackJackGameImpl().exec(reason -> {
             switch (reason) {
                 case USER_CHOOSES:
+                    System.exit(0);
                     // TODO: 未実装
                     break;
                 case RUNTIME_ERROR:

@@ -25,7 +25,7 @@ public class Player {
 
     //所持金表示
     public String getMoney(){
-        String msg = "    あなたの現在の手持ちは" + money + "$です    ";
+        String msg = "あなたの現在の手持ちは" + money + "$です";
         return msg;
     }
 }
