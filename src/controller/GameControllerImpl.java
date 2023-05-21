@@ -1,6 +1,7 @@
 package controller;
 
 import data.model.GameModel;
+import data.model.GameModelImpl;
 import util.*;
 import ui.GameView;
 
@@ -10,8 +11,9 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     //Gameデータ管理用
     private GameModel gameModel;
     public GameControllerImpl(GameView view, GameModel model) {
+
         gameView = view;
-        gameModel = model;
+        this.gameModel = new GameModelImpl();
     }
 
     /**
@@ -28,13 +30,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      */
     @Override
     public void startGame() {
-        // gameView.なんとかメソッド(this)
-        // gameView playerでなんとか
-        // TODO: ユーザの入力(賭ける処理)
-        // TODO: ユーザの入力(カードを配る、手札を表示する)
-        // TODO: ユーザの入力(賭ける処理)
-        // TODO: ユーザの入力(勝負判定)
-        // TODO: ユーザの入力(賭け金の払い戻し)
+        gameView.displayFirstBetAction(this);
         // TODO: 次に何をさせるのか判断する(Controllerの役割)
     }
 
@@ -48,5 +44,9 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             // FINISH
             // TODO: 終了処理
         }
+    }
+
+    public void selectFirstBetAction(String playerName) {
+        gameModel.firstBetAction(playerName);
     }
 }

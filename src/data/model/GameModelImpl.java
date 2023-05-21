@@ -4,6 +4,7 @@ import data.Card;
 import data.Dealer;
 import data.Deck;
 import data.Player;
+import util.StringUtil;
 
 public class GameModelImpl implements GameModel{
 
@@ -27,4 +28,8 @@ public class GameModelImpl implements GameModel{
         this.card = new Card();
     }
 
+    @Override
+    public void firstBetAction(String playerName) {
+        player.getMoney(playerName);
+    }
 }

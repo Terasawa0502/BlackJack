@@ -24,6 +24,8 @@ public class Constant {
     public static final String START_SELECT = "1.ゲームを開始する";
     public static final String FINISH_SELECT = "2.ゲームを終了する";
     public static final String SELECT_NUMBER = "番号を選択してください > ";
-    public static final String MISS_SELECT = "入力された文字が正しくありません\n もう一度入力してください";
+    public static final String MISS_SELECT = "入力された文字が正しくありません \nもう一度入力してください";
+    public static final String WHAT_IS_YOUR_NAME = "あなたの名前を半角英数字で入力してください";
+    public static final String MISS_IS_YOUR_NAME = "入力された名前が正しくありません。名前は半角英数字で入力してください";
     public static final String BET_MONEY = "この勝負に賭ける金額を教えてください";
 }

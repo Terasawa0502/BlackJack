@@ -1,11 +1,10 @@
 package ui;
 
-import data.Card;
-import data.Dealer;
-import data.Deck;
-import data.Player;
+import controller.GameController;
 import util.Constant;
 import util.StringUtil;
+
+import java.awt.*;
 import java.util.Scanner;
 
 public class GameViewImpl implements GameView{
@@ -31,7 +30,7 @@ public class GameViewImpl implements GameView{
         // 空白
         System.out.println(StringUtil.getEmptyRow());
 
-        //ユーザに入力させる
+        // プレイヤーに入力させる
         Scanner scanner = new Scanner(System.in);
 
         boolean entered = false;
@@ -55,5 +54,30 @@ public class GameViewImpl implements GameView{
         } while (!entered);
         scanner.close();
     }
+
+    @Override
+    public void displayFirstBetAction(OnUserInputCallback callback) {
+        // プレイヤー名を入力させる
+        System.out.println(StringUtil.alignCenter(Constant.WHAT_IS_YOUR_NAME));
+        Scanner scanner = new Scanner(System.in);
+        String playerName = scanner.nextLine();
+        // System.out.println(playerName.matches("^[A-Za-z0-9]*$")); 試験用ログ
+        // プレイヤー名が半角英数字ならOK
+        while (!playerName.matches("^[A-Za-z0-9]*$")) {
+            System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_NAME));
+            playerName = scanner.nextLine();
+        }
+        scanner.close();
+        // Gameコントローラにプレイヤー名を渡す
+        callback.selectFirstBetAction(playerName);
+        // 賭け金を入力させる
+        // TODO: ユーザの入力(賭ける処理)
+        // TODO: ユーザの入力(カードを配る、手札を表示する)
+        // TODO: ユーザの入力(賭ける処理)
+        // TODO: ユーザの入力(勝負判定)
+        // TODO: ユーザの入力(賭け金の払い戻し)
+        // モデルに渡す
+    }
+
 
 }

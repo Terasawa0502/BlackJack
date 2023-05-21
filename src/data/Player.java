@@ -1,11 +1,14 @@
 package data;
 
+import util.*;
 public class Player {
     /**
      * フィールド
      */
 
-    //プレイヤーの所持金
+    // プレイヤーの名前
+    private String name;
+    // プレイヤーの所持金
     private int money;
 
     /**
@@ -24,8 +27,8 @@ public class Player {
      */
 
     //所持金表示
-    public String getMoney(){
-        String msg = "あなたの現在の手持ちは" + money + "$です";
-        return msg;
+    public void getMoney(String playerName) {
+        String msg = playerName + "さんの現在の所持金は" + money + "$です";
+        System.out.println(StringUtil.alignCenter(msg));
     }
 }
