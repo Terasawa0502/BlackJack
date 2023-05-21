@@ -46,7 +46,14 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         }
     }
 
-    public void selectFirstBetAction(String playerName) {
+    public void selectFirstBetActionPlayer(String playerName) {
         gameModel.firstBetAction(playerName);
     }
+
+    @Override
+    public void selectFirstBetActionMoney(int playerMoney) {
+        System.out.println("テスト");
+        System.out.println(playerMoney);
+    }
+
 }

@@ -6,6 +6,7 @@ import util.StringUtil;
 
 import java.awt.*;
 import java.util.Scanner;
+import java.util.SimpleTimeZone;
 
 public class GameViewImpl implements GameView{
 
@@ -14,7 +15,7 @@ public class GameViewImpl implements GameView{
     }
     @Override
     public void displayTopScreen(OnUserInputCallback callback) {
-        //表示処理
+        // TODO: 表示処理
         System.out.println(StringUtil.getSeparator());
         System.out.println(StringUtil.alignCenter(Constant.WELCOME));
         System.out.println(StringUtil.getSeparator());
@@ -30,7 +31,7 @@ public class GameViewImpl implements GameView{
         // 空白
         System.out.println(StringUtil.getEmptyRow());
 
-        // プレイヤーに入力させる
+        // TODO: プレイヤーに入力させる
         Scanner scanner = new Scanner(System.in);
 
         boolean entered = false;
@@ -57,7 +58,7 @@ public class GameViewImpl implements GameView{
 
     @Override
     public void displayFirstBetAction(OnUserInputCallback callback) {
-        // プレイヤー名を入力させる
+        // TODO: プレイヤー名を入力させる
         System.out.println(StringUtil.alignCenter(Constant.WHAT_IS_YOUR_NAME));
         Scanner scanner = new Scanner(System.in);
         String playerName = scanner.nextLine();
@@ -67,11 +68,20 @@ public class GameViewImpl implements GameView{
             System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_NAME));
             playerName = scanner.nextLine();
         }
-        scanner.close();
         // Gameコントローラにプレイヤー名を渡す
-        callback.selectFirstBetAction(playerName);
-        // 賭け金を入力させる
-        // TODO: ユーザの入力(賭ける処理)
+        callback.selectFirstBetActionPlayer(playerName);
+        // TODO: 賭け金を入力させる
+        System.out.println(StringUtil.alignCenter(Constant.BET_MONEY));
+        int playerMoney = Integer.parseInt(scanner.nextLine());
+        String alterPlayerMoney = String.valueOf(playerMoney);
+        // 半角英数字以外の場合
+        while (playerMoney <= 0 || playerMoney > 100) {
+            System.out.println(StringUtil.alignCenter(Constant.MISS_BET_MONEY_2));
+            playerMoney = Integer.parseInt(scanner.nextLine());
+        }
+        scanner.close();
+        callback.selectFirstBetActionMoney(playerMoney);
+
         // TODO: ユーザの入力(カードを配る、手札を表示する)
         // TODO: ユーザの入力(賭ける処理)
         // TODO: ユーザの入力(勝負判定)

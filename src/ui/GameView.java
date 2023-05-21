@@ -23,7 +23,9 @@ public interface GameView {
         // トップスクリーンの選択画面表示
         void selectTopScreenItems(TopScreenItem item);
         // FirstAction(賭け金のBet)画面表示
-        void selectFirstBetAction(String playerName);
+        void selectFirstBetActionPlayer(String playerName);
+
+        void selectFirstBetActionMoney(int playerMoney);
     }
 
     /**

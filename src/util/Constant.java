@@ -28,4 +28,6 @@ public class Constant {
     public static final String WHAT_IS_YOUR_NAME = "あなたの名前を半角英数字で入力してください";
     public static final String MISS_IS_YOUR_NAME = "入力された名前が正しくありません。名前は半角英数字で入力してください";
     public static final String BET_MONEY = "この勝負に賭ける金額を教えてください";
+    public static final String MISS_BET_MONEY_1 = "半角数字で入力してください";
+    public static final String MISS_BET_MONEY_2 = "0〜100$の範囲内で再度入力してください";
 }
