@@ -1,4 +1,5 @@
 package data;
 
-public class Dealer {
+public class Dealer extends Human{
+
 }

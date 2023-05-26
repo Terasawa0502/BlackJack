@@ -31,5 +31,6 @@ public class GameModelImpl implements GameModel{
     @Override
     public void firstBetAction(String playerName) {
         player.getMoney(playerName);
+        card.showCard();
     }
 }

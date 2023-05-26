@@ -68,7 +68,7 @@ public class GameViewImpl implements GameView{
             System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_NAME));
             playerName = scanner.nextLine();
         }
-        // Gameコントローラにプレイヤー名を渡す
+        // GameコントローラのselectFirstBetActionメソッドにプレイヤー名を渡す
         callback.selectFirstBetActionPlayer(playerName);
         // TODO: 賭け金を入力させる
         System.out.println(StringUtil.alignCenter(Constant.BET_MONEY));
@@ -80,8 +80,6 @@ public class GameViewImpl implements GameView{
             playerMoney = Integer.parseInt(scanner.nextLine());
         }
         scanner.close();
-        callback.selectFirstBetActionMoney(playerMoney);
-
         // TODO: ユーザの入力(カードを配る、手札を表示する)
         // TODO: ユーザの入力(賭ける処理)
         // TODO: ユーザの入力(勝負判定)

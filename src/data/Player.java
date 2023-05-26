@@ -1,7 +1,7 @@
 package data;
 
 import util.*;
-public class Player {
+public class Player extends Human {
     /**
      * フィールド
      */

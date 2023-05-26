@@ -50,6 +50,10 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         gameModel.firstBetAction(playerName);
     }
 
+    /**
+     * 賭け金精算用のメソッド予定
+     * @param playerMoney
+     */
     @Override
     public void selectFirstBetActionMoney(int playerMoney) {
         System.out.println("テスト");
