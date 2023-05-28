@@ -18,6 +18,7 @@ public class Card {
      * デフォルトコンストラクタ
      */
     public Card() {
+        // 仮
         this(Suite.SPADE, Number.ACE);
     }
 
@@ -26,7 +27,7 @@ public class Card {
      */
 
     // トランプのマーク
-    private Suite suite;
+    static Suite suite;
     // トランプのマークの列挙型
     public enum Suite {
         SPADE("♠"), CLUB("♣"), HEART("❤"), DIAMOND("♦");
@@ -47,7 +48,7 @@ public class Card {
     }
 
     // トランプの数字
-    private Number number;
+    static Number number;
     // トランプの数字の列挙型
     public enum Number {
         ACE("A"), TWO("2"), THREE("3"), FOUR("4"),FIVE("5"),

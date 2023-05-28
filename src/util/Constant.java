@@ -2,7 +2,7 @@ package util;
 
 public class Constant {
 
-    public static final  int windowMaxWidth = 35;
+    public static final  int windowMaxWidth = 50;
 
     /**
      * 共通定数
@@ -15,6 +15,8 @@ public class Constant {
      */
     // ゲーム起動の挨拶 //
     public static final String WELCOME = "ブラックジャックへようこそ";
+    public static final String GAME_MENU = "メニュー画面より番号を選択してください";
+    public static final String SELECT_MENU = "メニュー画面";
     public static final String GAME_START = "それではゲームを開始します";
 
     /**

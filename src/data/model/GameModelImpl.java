@@ -28,9 +28,21 @@ public class GameModelImpl implements GameModel{
         this.card = new Card();
     }
 
+    // プレイヤーの名前と所持金を表示させるメソッドの呼び出し
     @Override
     public void firstBetAction(String playerName) {
         player.getMoney(playerName);
-        card.showCard();
+    }
+
+    // プレイヤーとディーラーにカードを配るメソッドの呼び出し
+    @Override
+    public void distributeCard() {
+        // TODO: Gamemodelのメソッド:プレイヤーとディーラーを引数にカードが戻るメソッド？
+    }
+
+    // プレイヤーとディーラーのカードを表示するメソッドの呼び出し
+    @Override
+    public void openCard() {
+        // TODO: Gamemodelのメソッド:プレイヤーとディーラーのカードを表示するメソッド？
     }
 }

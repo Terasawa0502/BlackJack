@@ -47,7 +47,17 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     }
 
     public void selectFirstBetActionPlayer(String playerName) {
+        // プレイヤーの所持金を表示させるメソッドをゲームモデルから呼び出す
         gameModel.firstBetAction(playerName);
+    }
+
+    /**
+     * プレイヤーとディラーのカード処理
+     */
+    @Override
+    public void selectFirstBetActionCard() {
+        // TODO : プレイヤーとディーラーにカードを配りメソッドをゲームモデルから呼び出す
+        // TODO : プレイヤーとディーラーのカードを表示するメソッドをゲームモデルから呼び出す
     }
 
     /**
@@ -55,9 +65,9 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      * @param playerMoney
      */
     @Override
-    public void selectFirstBetActionMoney(int playerMoney) {
-        System.out.println("テスト");
+    public void calcBetMoney(int playerMoney) {
         System.out.println(playerMoney);
     }
+
 
 }
