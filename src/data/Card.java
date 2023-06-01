@@ -15,14 +15,6 @@ public class Card {
     }
 
     /**
-     * デフォルトコンストラクタ
-     */
-    public Card() {
-        // 仮
-        this(Suite.SPADE, Number.ACE);
-    }
-
-    /**
      * フィールド
      */
 
@@ -73,10 +65,9 @@ public class Card {
     /**
      * メソッド
      */
-    // カードを表示させる (例:♠︎1,♦︎Kなど)
-    public void showCard() {
-        String msg = this.suite.getLabel() + this.number.getNum() + Constant.SPACE;
-        System.out.println(StringUtil.alignCenter(msg));
+    @Override
+    public String toString() {
+        String msg = suite.getLabel() + number.getNum() + Constant.SPACE;
+        return msg;
     }
-
 }

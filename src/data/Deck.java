@@ -1,28 +1,35 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Deck {
 
     /**
      * コンストラクタ
      */
-    public Deck() {
-        this.deck = set(this.card);
-        shuffle();
+    private Deck() {
+        createDeck();
     }
 
+    private static Deck instance;
+
+    /**
+     * 静的メソッド
+     */
+    public static Deck getInstance() {
+        if (instance == null) {
+            instance = new Deck();
+        }
+        return instance;
+    }
     /**
      * フィールド
      */
-
     // カード
     private Card card;
 
     // デッキ
-    private List<Card> deck;
+    private Queue<Card> deck;
 
     /**
      * メソッド
@@ -30,32 +37,26 @@ public class Deck {
 
     /**
      *
-     * @param card
-     * @return Deck
      * デッキをセットする
      */
-    public List<Card> set(Card card) {
+    private void createDeck () {
         List<Card> allDeck = new ArrayList<>();
-        for (Card.Suite suite : card.suite.values()) {
-            for (Card.Number number : card.number.values())
-                allDeck.add(new Card(suite,number));
+        for (Card.Suite suite : Card.suite.values()) {
+            for (Card.Number number : Card.number.values()) {
+                allDeck.add(new Card(suite, number));
+            }
         }
-        return allDeck;
-    }
-
-    // デッキをシャッフルする
-    public void shuffle() {
-        Collections.shuffle(this.deck);
+        Collections.shuffle(allDeck);
+        deck = new LinkedList<>(allDeck);
     }
 
     /**
      *
      * @return Card
-     * デッキからカードを引く
+     * デッキからカードを配る
      */
-    public Card drawDeck() {
-        shuffle();
-        return deck.get(0);
+    public Card distribute() {
+        return deck.poll();
     }
 
 }

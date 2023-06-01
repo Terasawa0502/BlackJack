@@ -1,5 +1,7 @@
 package controller;
 
+import data.Dealer;
+import data.Player;
 import data.model.GameModel;
 import data.model.GameModelImpl;
 import util.*;
@@ -10,8 +12,12 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     private GameView gameView;
     //Gameデータ管理用
     private GameModel gameModel;
-    public GameControllerImpl(GameView view, GameModel model) {
+    //プレイヤー
+    private Player player;
+    //ディーラー
+    private Dealer dealer;
 
+    public GameControllerImpl(GameView view, GameModel model) {
         gameView = view;
         this.gameModel = new GameModelImpl();
     }
@@ -30,6 +36,10 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      */
     @Override
     public void startGame() {
+        //プレイヤー作成//
+        this.player = new Player();
+        //ディーラー作成//
+        this.dealer = new Dealer();
         gameView.displayFirstBetAction(this);
         // TODO: 次に何をさせるのか判断する(Controllerの役割)
     }
@@ -48,7 +58,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
 
     public void selectFirstBetActionPlayer(String playerName) {
         // プレイヤーの所持金を表示させるメソッドをゲームモデルから呼び出す
-        gameModel.firstBetAction(playerName);
+        player.getMoney(playerName);
     }
 
     /**
@@ -57,6 +67,13 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     @Override
     public void selectFirstBetActionCard() {
         // TODO : プレイヤーとディーラーにカードを配りメソッドをゲームモデルから呼び出す
+        player.getHand().add(gameModel.drawCardFromDeck());
+        dealer.getHand().add(gameModel.drawCardFromDeck());
+        player.getHand().add(gameModel.drawCardFromDeck());
+        String playerCard = player.allHandOpen();
+        String dealerCard = dealer.allHandOpen();
+        System.out.println(playerCard);
+        System.out.println(dealerCard);
         // TODO : プレイヤーとディーラーのカードを表示するメソッドをゲームモデルから呼び出す
     }
 
@@ -66,8 +83,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      */
     @Override
     public void calcBetMoney(int playerMoney) {
-        System.out.println(playerMoney);
+        // System.out.println(playerMoney);
     }
-
 
 }
