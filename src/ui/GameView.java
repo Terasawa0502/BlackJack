@@ -16,6 +16,8 @@ public interface GameView {
      */
     void displayFirstBetAction(OnUserInputCallback callback);
 
+    void displaySecondBetAction(OnUserInputCallback callback);
+
     /**
      * ユーザー入力用コールバック
      */
@@ -23,11 +25,19 @@ public interface GameView {
         // トップスクリーンの選択画面表示
         void selectTopScreenItems(TopScreenItem item);
         // FirstAction(賭け金のBet)画面表示
-        void selectFirstBetActionPlayer(String playerName);
+        void selectFirstBetAction(String playerName, int playerMoney);
         // FirstAction(トランプ配り)
         void selectFirstBetActionCard();
-        // FirstAction(賭け金の精算)
-        void calcBetMoney(int playerMoney);
+        // SecondBetAction(賭け方の選択)
+        void selectSecondBetActionItems(SecondBetActionItem item);
+        // 賭け金の精算
+        void calcPlayerBetMoney(int playerBetMoney);
+        // 賭け金をViewに渡す
+        int returnPlayerBetMoney();
+        // 現在の所持金をViewに渡す
+        int returnPlayerPocketMoney();
+        // 現在の所持金を表示する
+        void screenPlayerPocketMoney(String playerName);
     }
 
     /**
@@ -41,11 +51,11 @@ public interface GameView {
     /**
      * SecondAction選択項目
      */
-    enum SecondActionItem {
-        HIT_ACTION, //ヒット
-        DOUBLE_ACTION, //ダブル
-        STAND_ACTION, //スタンド
-        DROP_ACTION //ドロップ
+    enum SecondBetActionItem {
+        HIT_ACTION, //1.ヒット
+        DOUBLE_ACTION, //2.ダブル
+        STAND_ACTION, //3.スタンド
+        DROP_ACTION //4.ドロップ
     }
 
 }

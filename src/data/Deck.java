@@ -43,10 +43,15 @@ public class Deck {
         List<Card> allDeck = new ArrayList<>();
         for (Card.Suite suite : Card.suite.values()) {
             for (Card.Number number : Card.number.values()) {
-                allDeck.add(new Card(suite, number));
+                System.out.println(new Card(suite, number));
+                // デッキのリストがおかしい
+                Card tempCard = new Card(suite, number);
+                allDeck.add(tempCard);
+                System.out.println(allDeck);
             }
         }
         Collections.shuffle(allDeck);
+        System.out.println(allDeck);
         deck = new LinkedList<>(allDeck);
     }
 

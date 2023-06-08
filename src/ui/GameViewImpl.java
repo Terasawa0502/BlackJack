@@ -67,29 +67,100 @@ public class GameViewImpl implements GameView{
         System.out.println(StringUtil.alignCenter(Constant.WHAT_IS_YOUR_NAME));
         Scanner scanner = new Scanner(System.in);
         String playerName = scanner.nextLine();
-        // System.out.println(playerName.matches("^[A-Za-z0-9]*$")); 試験用ログ
+        System.out.println(StringUtil.alignCenter(Constant.HOW_MUCH));
+        int playerFirstMoney = scanner.nextInt();
         // プレイヤー名が半角英数字ならOK
         while (!playerName.matches("^[A-Za-z0-9]*$")) {
             System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_NAME));
             playerName = scanner.nextLine();
+            playerFirstMoney = scanner.nextInt();
         }
         // GameコントローラのselectFirstBetActionメソッドにプレイヤー名を渡す
-        callback.selectFirstBetActionPlayer(playerName);
+        callback.selectFirstBetAction(playerName, playerFirstMoney);
         // TODO: 賭け金を入力させる
         System.out.println(StringUtil.alignCenter(Constant.BET_MONEY));
-        int playerMoney = Integer.parseInt(scanner.nextLine());
+        int playerBetMoney = scanner.nextInt();
         // 0$以上100ドル未満
-        while (playerMoney <= 0 || playerMoney > 100) {
-            System.out.println(StringUtil.alignCenter(Constant.MISS_BET_MONEY_2));
-            playerMoney = Integer.parseInt(scanner.nextLine());
+        while (playerBetMoney <= 0 || playerBetMoney > playerFirstMoney) {
+            callback.screenPlayerPocketMoney(playerName);
+            System.out.println(StringUtil.alignCenter(Constant.MISS_BET_MONEY_1));
+            playerBetMoney = scanner.nextInt();
         }
-        scanner.close();
+        callback.calcPlayerBetMoney(playerBetMoney);
         // TODO: カードを配る、手札を表示する
         callback.selectFirstBetActionCard();
+    }
+
+    @Override
+    public void displaySecondBetAction(OnUserInputCallback callback) {
+        System.out.println(StringUtil.alignCenter(Constant.GAME_MENU));
+        System.out.println(StringUtil.getEmptyRow());
+
+        // TODO: 選択項目を表示する
+        System.out.println(StringUtil.getSeparator());
+        System.out.println(StringUtil.getEmptyRow());
+        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_BET_MENU));
+        // 1. ヒット
+        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_BET_HIT));
+        // 2. ダブル
+        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_BET_DOUBLE));
+        // 3. スタンド
+        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_BET_STAND));
+        // 4. ドロップ
+        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_BET_DROP));
+        // 空白
+        System.out.println(StringUtil.getEmptyRow());
+        System.out.println(StringUtil.getSeparator());
+        // TODO: プレイヤーに番号を選択させる
+        Scanner scanner = new Scanner(System.in);
+        boolean entered = false;
+        do {
+            System.out.println(StringUtil.getEmptyRow());
+            String userInput = scanner.nextLine();
+            int tempPocketMoney = callback.returnPlayerPocketMoney();
+            int tempBetMoney = callback.returnPlayerBetMoney();
+            String msg = null;
+
+            switch (userInput) {
+
+                case "1": // ヒット
+                    //
+                    while ((tempBetMoney * 2) > tempPocketMoney) {
+                        msg = "ヒットするには" + (tempBetMoney*2 - tempPocketMoney) + "$たりません。";
+                        System.out.println(StringUtil.alignCenter(msg));
+                        System.out.println(StringUtil.getEmptyRow());
+                        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_ANOTHER_BET_MENU));
+                        userInput = scanner.nextLine();
+                    }
+                    entered = true;
+                    callback.selectSecondBetActionItems(SecondBetActionItem.HIT_ACTION);
+                    // もう一度呼べるようにしたい
+                    break;
+                case "2": // ダブル
+                    while ( (tempBetMoney * 3) > tempPocketMoney ) {
+                        msg = "ダブルするには" + (tempBetMoney*3 - tempPocketMoney) + "$たりません。";
+                        System.out.println(StringUtil.alignCenter(msg));
+                        System.out.println(StringUtil.getEmptyRow());
+                        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_ANOTHER_BET_MENU));
+                        userInput = scanner.nextLine();
+                    }
+                    entered = true;
+                    callback.selectSecondBetActionItems(SecondBetActionItem.DOUBLE_ACTION);
+                    break;
+                case "3": // スタンド
+                    entered = true;
+                    callback.selectSecondBetActionItems(SecondBetActionItem.STAND_ACTION);
+                    break;
+                case "4": // ドロップ
+                    entered = true;
+                    callback.selectSecondBetActionItems(SecondBetActionItem.DROP_ACTION);
+                    break;
+            }
+        } while (!entered);
+        scanner.close();
         // TODO: ユーザの入力(賭ける処理)
         // TODO: ユーザの入力(勝負判定)
         // TODO: ユーザの入力(賭け金の払い戻し)
-        // モデルに渡す
     }
 
 

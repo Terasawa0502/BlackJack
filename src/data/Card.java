@@ -22,7 +22,7 @@ public class Card {
     static Suite suite;
     // トランプのマークの列挙型
     public enum Suite {
-        SPADE("♠"), CLUB("♣"), HEART("❤"), DIAMOND("♦");
+        SPADE("♠"),CLUB("♣"),HEART("❤"),DIAMOND("♦");
 
         // コンストラクタ
         Suite (String label) {

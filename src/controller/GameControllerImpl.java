@@ -36,12 +36,14 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      */
     @Override
     public void startGame() {
-        //プレイヤー作成//
-        this.player = new Player();
+
         //ディーラー作成//
         this.dealer = new Dealer();
+        // プレイヤー名の設定・賭け金の設定・トランプ配り・手札表示
         gameView.displayFirstBetAction(this);
-        // TODO: 次に何をさせるのか判断する(Controllerの役割)
+        // 手札を見て次のアクションを選択させる
+        gameView.displaySecondBetAction(this);
+
     }
 
     @Override
@@ -56,9 +58,11 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         }
     }
 
-    public void selectFirstBetActionPlayer(String playerName) {
+    public void selectFirstBetAction(String playerName, int playerMoney) {
         // プレイヤーの所持金を表示させるメソッドをゲームモデルから呼び出す
-        player.getMoney(playerName);
+        //プレイヤー作成//
+        this.player = new Player(playerName, playerMoney);
+        player.getPocketMoney(playerName);
     }
 
     /**
@@ -69,21 +73,57 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         // TODO : プレイヤーとディーラーにカードを配りメソッドをゲームモデルから呼び出す
         player.getHand().add(gameModel.drawCardFromDeck());
         dealer.getHand().add(gameModel.drawCardFromDeck());
-        player.getHand().add(gameModel.drawCardFromDeck());
-        String playerCard = player.allHandOpen();
-        String dealerCard = dealer.allHandOpen();
-        System.out.println(playerCard);
-        System.out.println(dealerCard);
-        // TODO : プレイヤーとディーラーのカードを表示するメソッドをゲームモデルから呼び出す
+        System.out.println(player.allHandOpen());
+        System.out.println(dealer.allHandOpen());
+    }
+
+    @Override
+    public void selectSecondBetActionItems(GameView.SecondBetActionItem item) {
+        // TODO: SecondBetAction画面でプレイヤーが選択したものにより変える
+        if (item == GameView.SecondBetActionItem.HIT_ACTION) {
+            // 2回目以降で処理を変更したい
+            player.setBetMoney(player.getBetMoney()*2);
+            System.out.println(player.getBetMoney());
+            player.getHand().add(gameModel.drawCardFromDeck());
+            System.out.println(player.allHandOpen());
+        } else if (item == GameView.SecondBetActionItem.DOUBLE_ACTION) {
+            player.setBetMoney(player.getBetMoney()*3);
+            player.getHand().add(gameModel.drawCardFromDeck());
+            System.out.println(player.allHandOpen());
+        } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
+            // 手札Openして勝負するメソッドを呼ぶ
+        } else if (item == GameView.SecondBetActionItem.DROP_ACTION) {
+            // スタート画面に戻る
+            startUp();
+        }
     }
 
     /**
      * 賭け金精算用のメソッド予定
-     * @param playerMoney
+     * @param playerBetMoney
      */
     @Override
-    public void calcBetMoney(int playerMoney) {
-        // System.out.println(playerMoney);
+    public void calcPlayerBetMoney(int playerBetMoney) {
+        player.setBetMoney(playerBetMoney);
+    }
+
+    @Override
+    public int returnPlayerBetMoney() {
+        return player.getBetMoney();
+    }
+
+    @Override
+    public int returnPlayerPocketMoney() {
+        return player.getPocketMoney();
+    }
+
+    /**
+     *
+     * @param playerName
+     */
+    @Override
+    public void screenPlayerPocketMoney(String playerName) {
+        player.getPocketMoney(playerName);
     }
 
 }
