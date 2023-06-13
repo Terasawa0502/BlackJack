@@ -1,6 +1,7 @@
 package ui;
 
 import controller.GameController;
+import data.Human;
 import util.Constant;
 import util.StringUtil;
 
@@ -162,6 +163,5 @@ public class GameViewImpl implements GameView{
         // TODO: ユーザの入力(勝負判定)
         // TODO: ユーザの入力(賭け金の払い戻し)
     }
-
 
 }

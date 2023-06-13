@@ -1,6 +1,7 @@
 package ui;
 
 import controller.GameController;
+import util.StringUtil;
 
 public interface GameView {
 
@@ -56,6 +57,19 @@ public interface GameView {
         DOUBLE_ACTION, //2.ダブル
         STAND_ACTION, //3.スタンド
         DROP_ACTION //4.ドロップ
+    }
+
+    /**
+     * コンソールにただ表示するようメソッド
+     */
+
+    public static void printGameInfo(String information) {
+        System.out.println(StringUtil.alignCenter(information));
+    }
+
+    public static void printGameHand(String humanName) {
+        String msg = humanName + "さんの手札";
+        System.out.println(StringUtil.alignCenter(msg));
     }
 
 }

@@ -38,11 +38,12 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     public void startGame() {
 
         //ディーラー作成//
-        this.dealer = new Dealer();
+        this.dealer = Dealer.getInstance();
         // プレイヤー名の設定・賭け金の設定・トランプ配り・手札表示
         gameView.displayFirstBetAction(this);
-        // 手札を見て次のアクションを選択させる
+        // 手札を見て次のアクションを選択させる(プレイヤー)
         gameView.displaySecondBetAction(this);
+        // プレイヤーの手札によってディーラー次の行動を決める
 
     }
 
@@ -61,7 +62,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     public void selectFirstBetAction(String playerName, int playerMoney) {
         // プレイヤーの所持金を表示させるメソッドをゲームモデルから呼び出す
         //プレイヤー作成//
-        this.player = new Player(playerName, playerMoney);
+        this.player = Player.getInstance(playerName, playerMoney);
         player.getPocketMoney(playerName);
     }
 
@@ -73,8 +74,10 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         // TODO : プレイヤーとディーラーにカードを配りメソッドをゲームモデルから呼び出す
         player.getHand().add(gameModel.drawCardFromDeck());
         dealer.getHand().add(gameModel.drawCardFromDeck());
-        System.out.println(player.allHandOpen());
-        System.out.println(dealer.allHandOpen());
+        GameView.printGameHand(player.getName());
+        GameView.printGameInfo(player.allHandOpen());
+        GameView.printGameHand(dealer.getName());
+        GameView.printGameInfo(dealer.allHandOpen());
     }
 
     @Override
@@ -83,15 +86,17 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         if (item == GameView.SecondBetActionItem.HIT_ACTION) {
             // 2回目以降で処理を変更したい
             player.setBetMoney(player.getBetMoney()*2);
-            System.out.println(player.getBetMoney());
             player.getHand().add(gameModel.drawCardFromDeck());
-            System.out.println(player.allHandOpen());
+            GameView.printGameHand(player.getName());
+            GameView.printGameInfo(player.allHandOpen());
+            // TODO: 手札が21を超えていないかを判断させる
+            gameView.displaySecondBetAction(this);
         } else if (item == GameView.SecondBetActionItem.DOUBLE_ACTION) {
             player.setBetMoney(player.getBetMoney()*3);
             player.getHand().add(gameModel.drawCardFromDeck());
             System.out.println(player.allHandOpen());
         } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
-            // 手札Openして勝負するメソッドを呼ぶ
+            // ディーらが行動するメソッドを呼ぶ
         } else if (item == GameView.SecondBetActionItem.DROP_ACTION) {
             // スタート画面に戻る
             startUp();

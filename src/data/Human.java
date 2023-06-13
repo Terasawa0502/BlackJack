@@ -11,6 +11,9 @@ public abstract class Human {
     /**
      * フィールド
      */
+    // 名前
+    protected String name;
+
     // 手札
     protected List<Card> hand = new ArrayList<>();
     // 手札の何枚目かを表す
