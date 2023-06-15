@@ -1,11 +1,13 @@
 package controller;
 
-import data.Dealer;
-import data.Player;
+import data.*;
 import data.model.GameModel;
 import data.model.GameModelImpl;
 import util.*;
 import ui.GameView;
+
+import javax.swing.plaf.synth.SynthTextAreaUI;
+import java.util.List;
 
 public class GameControllerImpl implements GameController, GameView.OnUserInputCallback{
     // Game表示用
@@ -89,7 +91,9 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             player.getHand().add(gameModel.drawCardFromDeck());
             GameView.printGameHand(player.getName());
             GameView.printGameInfo(player.allHandOpen());
-            // TODO: 手札が21を超えていないかを判断させる
+            // TODO: 手札が21を超えていないかを判断させる?
+            int temp = player.getScore(player.getHand());
+            System.out.println(temp);
             gameView.displaySecondBetAction(this);
         } else if (item == GameView.SecondBetActionItem.DOUBLE_ACTION) {
             player.setBetMoney(player.getBetMoney()*3);

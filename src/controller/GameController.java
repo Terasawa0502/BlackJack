@@ -1,6 +1,9 @@
 package controller;
 
-import data.Player;
+import data.*;
+
+import java.awt.*;
+import java.util.List;
 
 public interface GameController {
     /**
