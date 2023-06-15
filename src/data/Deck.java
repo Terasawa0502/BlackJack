@@ -41,17 +41,12 @@ public class Deck {
      */
     private void createDeck () {
         List<Card> allDeck = new ArrayList<>();
-        for (Card.Suite suite : Card.suite.values()) {
-            for (Card.Number number : Card.number.values()) {
-                System.out.println(new Card(suite, number));
-                // デッキのリストがおかしい
-                Card tempCard = new Card(suite, number);
-                allDeck.add(tempCard);
-                System.out.println(allDeck);
+        for (Card.Suite suite : Card.Suite.values()) {
+            for (Card.Number number : Card.Number.values()) {
+                allDeck.add(new Card(suite, number));
             }
         }
         Collections.shuffle(allDeck);
-        System.out.println(allDeck);
         deck = new LinkedList<>(allDeck);
     }
 

@@ -19,7 +19,7 @@ public class Card {
      */
 
     // トランプのマーク
-    static Suite suite;
+    private Suite suite;
     // トランプのマークの列挙型
     public enum Suite {
         SPADE("♠"),CLUB("♣"),HEART("❤"),DIAMOND("♦");
@@ -39,8 +39,12 @@ public class Card {
 
     }
 
+    public Suite getSuite() {
+        return suite;
+    }
+
     // トランプの数字
-    static Number number;
+    private Number number;
     // トランプの数字の列挙型
     public enum Number {
         ACE("A"), TWO("2"), THREE("3"), FOUR("4"),FIVE("5"),
@@ -60,6 +64,10 @@ public class Card {
             return num;
         }
 
+    }
+
+    public Number getNumber() {
+        return number;
     }
 
     /**
