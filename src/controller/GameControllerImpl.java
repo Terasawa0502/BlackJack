@@ -86,14 +86,9 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     public void selectSecondBetActionItems(GameView.SecondBetActionItem item) {
         // TODO: SecondBetAction画面でプレイヤーが選択したものにより変える
         if (item == GameView.SecondBetActionItem.HIT_ACTION) {
-            // 2回目以降で処理を変更したい
-            player.setBetMoney(player.getBetMoney()*2);
             player.getHand().add(gameModel.drawCardFromDeck());
             GameView.printGameHand(player.getName());
             GameView.printGameInfo(player.allHandOpen());
-            // TODO: 手札が21を超えていないかを判断させる?
-            int temp = player.getScore(player.getHand());
-            System.out.println(temp);
             gameView.displaySecondBetAction(this);
         } else if (item == GameView.SecondBetActionItem.DOUBLE_ACTION) {
             player.setBetMoney(player.getBetMoney()*3);

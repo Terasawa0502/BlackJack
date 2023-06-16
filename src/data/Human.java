@@ -33,22 +33,25 @@ public abstract class Human {
     }
 
     public int getScore(List<Card> hand) {
-        // TODO:if分で10,11,12,13は10として扱う
         // カードスコア
         int score = 0;
+        // TODO: Aを後にして並び替えたい
         for (Card card : hand) {
-            // TODO: card.getNum()を読んでifで分岐させたい
             if (card.getNumber().getNum() == "10" || card.getNumber().getNum() == "J" || card.getNumber().getNum() == "Q" || card.getNumber().getNum() == "K") {
+                // 数字が10,J,Q,Kならscoreに10代入
                 int tempScore = 10;
                 score += tempScore ;
             } else if (card.getNumber().getNum() != "A") {
+                // 数字がA以外ならscoreにその数字を代入
                 int tempScore = Integer.parseInt(card.getNumber().getNum());
                 score += tempScore ;
             } else {
                 if (card.getNumber().getNum() == "A" && score + 11 > 21) {
+                    // 数字がAでかつ21を超えるなら11ではなく1として扱う
                     int tempScore = 1;
                     score += tempScore ;
                 } else {
+                    // 数字がAでかつ21を超えないなら11として計算する
                     int tempScore = 11;
                     score += tempScore ;
                 }
@@ -56,8 +59,13 @@ public abstract class Human {
         }
         return score;
     }
-    public boolean judgeBurst(List<Card> hand) {
-        boolean isBurst = false;
+    public boolean judgeBurst(int score) {
+        boolean isBurst;
+        if (score < 21) {
+            isBurst =false;
+        } else {
+            isBurst = true;
+        }
         return isBurst;
     }
 
