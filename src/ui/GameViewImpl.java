@@ -78,7 +78,8 @@ public class GameViewImpl implements GameView{
         }
         // GameコントローラのselectFirstBetActionメソッドにプレイヤー名を渡す
         callback.selectFirstBetAction(playerName, playerFirstMoney);
-        // TODO: 賭け金を入力させる
+        // 賭け金を入力させる
+        System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.alignCenter(Constant.BET_MONEY));
         int playerBetMoney = scanner.nextInt();
         // 0$以上100ドル未満
@@ -88,12 +89,13 @@ public class GameViewImpl implements GameView{
             playerBetMoney = scanner.nextInt();
         }
         callback.calcPlayerBetMoney(playerBetMoney);
-        // TODO: カードを配る、手札を表示する
+        // カードを配る、手札を表示する
         callback.selectFirstBetActionCard();
     }
 
     @Override
     public void displaySecondBetAction(OnUserInputCallback callback) {
+        System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.alignCenter(Constant.GAME_MENU));
         System.out.println(StringUtil.getEmptyRow());
 
@@ -159,7 +161,6 @@ public class GameViewImpl implements GameView{
             }
         } while (!entered);
         scanner.close();
-        // TODO: ユーザの入力(賭ける処理)
         // TODO: ユーザの入力(勝負判定)
         // TODO: ユーザの入力(賭け金の払い戻し)
     }

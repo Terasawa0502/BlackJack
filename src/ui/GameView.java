@@ -80,10 +80,6 @@ public interface GameView {
         String score = String.valueOf(humanScore);
         String msg2 = "カードスコア ： " + humanScore;
         GameView.printGameInfo(msg2);
-
-    }
-
-    public static void getEmptyRow (){
         System.out.println(StringUtil.getEmptyRow());
     }
 

@@ -76,7 +76,6 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         player.getHand().add(gameModel.drawCardFromDeck());
         dealer.getHand().add(gameModel.drawCardFromDeck());
         GameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
-        GameView.getEmptyRow();
         GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
     }
 
@@ -99,7 +98,6 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             player.setBetMoney(player.getBetMoney()*2);
             player.getHand().add(gameModel.drawCardFromDeck());
             GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
-            GameView.getEmptyRow();
             // ディーラーが行動するメソッドを呼ぶ
             dealerAction();
         } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
@@ -141,10 +139,12 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
 
     public void dealerAction () {
         // TODO :プレイヤーの手札によってディーラー次の行動を決める(ディーラーは17以上になるまでヒット)
+        int n = 1;
         while (dealer.getScore(dealer.getHand()) < 17) {
             dealer.getHand().add(gameModel.drawCardFromDeck());
+            String msg = n++ +"回目のカードを引いた結果です" ;
+            GameView.printGameInfo(msg);
             GameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
-            GameView.getEmptyRow();
             if (dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
                 dealer.surrender(dealer.getName());
             }
