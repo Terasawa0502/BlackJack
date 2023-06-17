@@ -1,5 +1,6 @@
 package data;
 
+import ui.GameView;
 import util.Constant;
 
 import java.awt.*;
@@ -60,13 +61,16 @@ public abstract class Human {
         return score;
     }
     public boolean judgeBurst(int score) {
-        boolean isBurst;
-        if (score < 21) {
-            isBurst =false;
-        } else {
-            isBurst = true;
+        boolean isBurst = false;
+        if (score > 21) {
+            isBurst =true;
         }
         return isBurst;
+    }
+
+    public void surrender (String humanName) {
+        String msg = "手札のスコアが21を超えたため"+humanName + "さんの負けです";
+        GameView.printGameInfo(msg);
     }
 
 }

@@ -75,27 +75,34 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     public void selectFirstBetActionCard() {
         // TODO : プレイヤーとディーラーにカードを配りメソッドをゲームモデルから呼び出す
         player.getHand().add(gameModel.drawCardFromDeck());
+        player.getHand().add(gameModel.drawCardFromDeck());
         dealer.getHand().add(gameModel.drawCardFromDeck());
-        GameView.printGameHand(player.getName());
-        GameView.printGameInfo(player.allHandOpen());
-        GameView.printGameHand(dealer.getName());
-        GameView.printGameInfo(dealer.allHandOpen());
+        GameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
+        GameView.getEmptyRow();
+        GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
     }
 
     @Override
     public void selectSecondBetActionItems(GameView.SecondBetActionItem item) {
         // TODO: SecondBetAction画面でプレイヤーが選択したものにより変える
         if (item == GameView.SecondBetActionItem.HIT_ACTION) {
+            // プレイヤーが賭け金をそのままにBurstするまで手札を加えれる
             player.getHand().add(gameModel.drawCardFromDeck());
-            GameView.printGameHand(player.getName());
-            GameView.printGameInfo(player.allHandOpen());
-            gameView.displaySecondBetAction(this);
+            GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
+            // 手札が21を超えていないかを判断させる
+            if (player.judgeBurst(player.getScore(player.getHand()))) {
+                player.surrender(player.getName());
+            } else {
+                gameView.displaySecondBetAction(this);
+            }
         } else if (item == GameView.SecondBetActionItem.DOUBLE_ACTION) {
-            player.setBetMoney(player.getBetMoney()*3);
+            // プレイヤーが賭け金を2倍にできるが1枚しか引けない
+            player.setBetMoney(player.getBetMoney()*2);
             player.getHand().add(gameModel.drawCardFromDeck());
             System.out.println(player.allHandOpen());
+            // TODO: ディーラーが行動するメソッドを呼ぶ
         } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
-            // ディーらが行動するメソッドを呼ぶ
+            // TODO: ディーラーが行動するメソッドを呼ぶ
         } else if (item == GameView.SecondBetActionItem.DROP_ACTION) {
             // スタート画面に戻る
             startUp();

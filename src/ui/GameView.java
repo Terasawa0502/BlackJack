@@ -67,9 +67,24 @@ public interface GameView {
         System.out.println(StringUtil.alignCenter(information));
     }
 
-    public static void printGameHand(String humanName) {
-        String msg = humanName + "さんの手札";
-        System.out.println(StringUtil.alignCenter(msg));
+    /**
+     * 人間の手札情報表示
+     * @param humanName 人間の名前
+     * @param information 人間の手札
+     * @param humanScore 人間の手札のスコア表示
+     */
+    public static void printGameHand(String humanName, String information, int humanScore) {
+        String msg1 = humanName + "さんの手札";
+        System.out.println(StringUtil.alignCenter(msg1));
+        printGameInfo(information);
+        String score = String.valueOf(humanScore);
+        String msg2 = "カードスコア ： " + humanScore;
+        GameView.printGameInfo(msg2);
+
+    }
+
+    public static void getEmptyRow (){
+        System.out.println(StringUtil.getEmptyRow());
     }
 
 }
