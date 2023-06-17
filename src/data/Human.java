@@ -20,7 +20,7 @@ public abstract class Human {
 
     // 手札のカードを全てOpen
     public String allHandOpen() {
-        // TODO : handフィールドを全て取り出しshowCardメソッド
+        // handフィールドを全て取り出しshowCardメソッド
         StringBuilder sb = new StringBuilder();
         for (Card card: hand) {
             sb.append(card.toString());
