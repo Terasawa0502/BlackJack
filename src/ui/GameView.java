@@ -62,8 +62,8 @@ public interface GameView {
 
     /**
      * コンソールにただ表示するようメソッド
+     * @param information 情報
      */
-
     public static void printGameInfo(String information) {
         System.out.println(StringUtil.alignCenter(information));
     }
@@ -90,4 +90,29 @@ public interface GameView {
         System.out.println(StringUtil.getEmptyRow());
     }
 
+    public static void countDrawCard(int count) {
+        String msg = count + "回目のカードを引いた結果です";
+        GameView.printGameInfo(msg);
+    }
+
+    public enum judgeGameItem {
+        PLAYER_WIN, // 1.プレイヤーの勝利
+        DEALER_WIN, // 2.ディーラーの勝利
+        DRAW // 3.ドロー
+    }
+
+    public static void judgeGame (String playerName, String dealerName, judgeGameItem item) {
+        if (item == judgeGameItem.DEALER_WIN) {
+            String msg = dealerName + Constant.WIN_MESSAGE;
+            GameView.printGameInfo(msg);
+        } else if (item == judgeGameItem.PLAYER_WIN) {
+            String msg = playerName + Constant.WIN_MESSAGE;
+            GameView.printGameInfo(msg);
+        } else if (item == judgeGameItem.DRAW) {
+            GameView.printGameInfo(Constant.DRAW_MESSAGE);
+        } else {
+            //　// 何もせず次に行動を移行する
+        }
+
+    }
 }

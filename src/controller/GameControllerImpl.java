@@ -38,7 +38,6 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      */
     @Override
     public void startGame() {
-
         //ディーラー作成//
         this.dealer = Dealer.getInstance();
         // プレイヤー名の設定・賭け金の設定・トランプ配り・手札表示
@@ -47,6 +46,9 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         gameView.displaySecondBetAction(this);
         // ディーラーの行動に移る
         dealerAction();
+        // 勝負判定に移る
+        judgeGame();
+        // TODO: 賭け金の精算
     }
 
     @Override
@@ -90,8 +92,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
             // 手札が21を超えていないかを判断させる
             if (player.judgeBurst(player.getScore(player.getHand()))) {
-                player.surrender(player.getName());
-                // ToDo : ゲーム終了
+                // 何もせず次に行動を移行する
             } else {
                 gameView.displaySecondBetAction(this);
             }
@@ -101,7 +102,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             player.getHand().add(gameModel.drawCardFromDeck());
             GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
         } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
-
+            // 何もせず次に行動を移行する
         } else if (item == GameView.SecondBetActionItem.DROP_ACTION) {
             // TODO: スタート画面に戻る
             startUp();
@@ -141,12 +142,34 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         int n = 1;
         while (dealer.getScore(dealer.getHand()) < 17) {
             dealer.getHand().add(gameModel.drawCardFromDeck());
-            String msg = n++ +"回目のカードを引いた結果です" ;
-            GameView.printGameInfo(msg);
+            GameView.countDrawCard(n++);
             GameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
             if (dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
-                dealer.surrender(dealer.getName());
+                // 何もせず次に行動を移行する
             }
+        }
+    }
+
+    public void judgeGame() {
+        if (!player.judgeBurst(player.getScore(player.getHand())) && !dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
+            // pがバーストしていないかつdがバーストしていない場合　21に近い方が勝ちもしくは同じ数字なら引き分け
+            if (21 - player.getScore(player.getHand()) < 21 - dealer.getScore(dealer.getHand())) {
+                // dの方が21に近いためdの勝ち
+                GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+            } else if (21 - player.getScore(player.getHand()) > 21 - dealer.getScore(dealer.getHand())) {
+                GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+            } else {
+                GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
+            }
+        } else if (player.judgeBurst(player.getScore(player.getHand())) && !dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
+            // pがバーストしていてdがバーストしていない場合はdの勝ち
+            GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+        } else if (!player.judgeBurst(player.getScore(player.getHand())) && dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
+            // pがバーストしていていなくてdがバーストしている場合はpの勝ち
+            GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+        } else {
+            // pがバーストしていてdがバーストしていた場合はdraw
+            GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
         }
     }
 

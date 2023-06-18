@@ -2,7 +2,7 @@ package util;
 
 public class Constant {
 
-    public static final  int windowMaxWidth = 50;
+    public static final  int windowMaxWidth = 60;
 
     /**
      * 共通定数
@@ -47,5 +47,12 @@ public class Constant {
      * ディーラーの行動場面
      */
     public static final String TRANSFER_DEALER = "ディーラーさんのターンになります";
+
+    /**
+     * 勝負判定
+     */
+    public static final String WIN_MESSAGE = "さんの勝ちです";
+    public static final String DRAW_MESSAGE = "ドローとなります";
+
 
 }
