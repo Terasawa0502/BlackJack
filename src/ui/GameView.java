@@ -1,6 +1,7 @@
 package ui;
 
 import controller.GameController;
+import util.Constant;
 import util.StringUtil;
 
 public interface GameView {
@@ -77,9 +78,15 @@ public interface GameView {
         String msg1 = humanName + "さんの手札";
         System.out.println(StringUtil.alignCenter(msg1));
         printGameInfo(information);
-        String score = String.valueOf(humanScore);
-        String msg2 = "カードスコア ： " + humanScore;
-        GameView.printGameInfo(msg2);
+        if (humanScore == 21) {
+            String score = String.valueOf(humanScore);
+            String msg2 = "カードスコア ： " + humanScore + Constant.BLACKJACK;
+            GameView.printGameInfo(msg2);
+        } else {
+            String score = String.valueOf(humanScore);
+            String msg2 = "カードスコア ： " + humanScore;
+            GameView.printGameInfo(msg2);
+        }
         System.out.println(StringUtil.getEmptyRow());
     }
 

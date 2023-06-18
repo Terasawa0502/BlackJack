@@ -153,7 +153,7 @@ public class GameViewImpl implements GameView{
             }
         } while (!entered);
     scanner.close();
-    // TODO: ヒットしてからスタンドに変えると2回表示される
+    // TODO: ヒットしてからスタンドに変えるときヒットの回数だけ表示される？
     System.out.println(StringUtil.alignCenter(Constant.TRANSFER_DEALER));
     System.out.println(StringUtil.getEmptyRow());
     }
