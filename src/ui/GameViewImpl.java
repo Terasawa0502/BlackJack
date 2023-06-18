@@ -114,7 +114,7 @@ public class GameViewImpl implements GameView{
         // 空白
         System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.getSeparator());
-        // TODO: プレイヤーに番号を選択させる
+        // プレイヤーに番号を選択させる
         Scanner scanner = new Scanner(System.in);
         boolean entered = false;
         do {
@@ -127,21 +127,13 @@ public class GameViewImpl implements GameView{
             switch (userInput) {
 
                 case "1": // ヒット
-                    //
-                    while ((tempBetMoney * 2) > tempPocketMoney) {
-                        msg = "ヒットするには" + (tempBetMoney*2 - tempPocketMoney) + "$たりません。";
-                        System.out.println(StringUtil.alignCenter(msg));
-                        System.out.println(StringUtil.getEmptyRow());
-                        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_ANOTHER_BET_MENU));
-                        userInput = scanner.nextLine();
-                    }
                     entered = true;
                     callback.selectSecondBetActionItems(SecondBetActionItem.HIT_ACTION);
                     // もう一度呼べるようにしたい
                     break;
                 case "2": // ダブル
-                    while ( (tempBetMoney * 3) > tempPocketMoney ) {
-                        msg = "ダブルするには" + (tempBetMoney*3 - tempPocketMoney) + "$たりません。";
+                    while ( (tempBetMoney * 2) > tempPocketMoney ) {
+                        msg = "ダブルするには" + (tempBetMoney*2 - tempPocketMoney) + "$たりません。";
                         System.out.println(StringUtil.alignCenter(msg));
                         System.out.println(StringUtil.getEmptyRow());
                         System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_ANOTHER_BET_MENU));
@@ -160,9 +152,9 @@ public class GameViewImpl implements GameView{
                     break;
             }
         } while (!entered);
-        scanner.close();
-        // TODO: ユーザの入力(勝負判定)
-        // TODO: ユーザの入力(賭け金の払い戻し)
+    scanner.close();
+    // TODO: ヒットしてからスタンドに変えると2回表示される
+    System.out.println(StringUtil.alignCenter(Constant.TRANSFER_DEALER));
+    System.out.println(StringUtil.getEmptyRow());
     }
-
 }

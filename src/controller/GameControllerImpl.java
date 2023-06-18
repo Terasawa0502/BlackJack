@@ -45,6 +45,8 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         gameView.displayFirstBetAction(this);
         // 手札を見て次のアクションを選択させる(プレイヤー)
         gameView.displaySecondBetAction(this);
+        // ディーラーの行動に移る
+        dealerAction();
     }
 
     @Override
@@ -98,13 +100,10 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             player.setBetMoney(player.getBetMoney()*2);
             player.getHand().add(gameModel.drawCardFromDeck());
             GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
-            // ディーラーが行動するメソッドを呼ぶ
-            dealerAction();
         } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
-            // ディーラーが行動するメソッドを呼ぶ
-            dealerAction();
+
         } else if (item == GameView.SecondBetActionItem.DROP_ACTION) {
-            // スタート画面に戻る
+            // TODO: スタート画面に戻る
             startUp();
         }
     }
@@ -138,7 +137,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     }
 
     public void dealerAction () {
-        // TODO :プレイヤーの手札によってディーラー次の行動を決める(ディーラーは17以上になるまでヒット)
+        // プレイヤーの手札によってディーラー次の行動を決める(ディーラーは17以上になるまでヒット)
         int n = 1;
         while (dealer.getScore(dealer.getHand()) < 17) {
             dealer.getHand().add(gameModel.drawCardFromDeck());

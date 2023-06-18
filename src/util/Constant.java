@@ -41,4 +41,10 @@ public class Constant {
     public static final String SELECT_SECOND_BET_STAND = "3.スタンド";
     public static final String SELECT_SECOND_BET_DROP = "4.ドロップ";
     public static final String SELECT_SECOND_ANOTHER_BET_MENU = "別のBetアクションを選択してください";
+
+    /**
+     * ディーラー dealer
+     */
+    public static final String TRANSFER_DEALER = "ディーラーさんのターンになります";
+
 }
