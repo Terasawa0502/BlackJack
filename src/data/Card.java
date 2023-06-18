@@ -62,9 +62,13 @@ public class Card {
 
         private int score;
 
-        // メソッド:トランプの数字を戻す
+        // トランプの数字を戻す
         public String getNum() {
             return num;
+        }
+        // トランプの数字を戻す
+        public int getScore() {
+            return score;
         }
 
     }

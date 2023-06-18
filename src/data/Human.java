@@ -4,6 +4,8 @@ import ui.GameView;
 import util.Constant;
 
 import java.awt.*;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,10 +36,20 @@ public abstract class Human {
     }
 
     public int getScore(List<Card> hand) {
+        // Aを後にして並び替えたい
+        List<Card> tempHand = new ArrayList<>();
+        for (Card tempcard: hand ) {
+            tempHand.add(tempcard);
+        }
+        Collections.sort(tempHand, new Comparator<Card>() {
+            @Override
+            public int compare(Card value1, Card value2) {
+                return (value2.getNumber().getScore() - value1.getNumber().getScore());
+            }
+        });
         // カードスコア
         int score = 0;
-        // TODO: Aを後にして並び替えたい
-        for (Card card : hand) {
+        for (Card card : tempHand) {
             if (card.getNumber().getNum() == "10" || card.getNumber().getNum() == "J" || card.getNumber().getNum() == "Q" || card.getNumber().getNum() == "K") {
                 // 数字が10,J,Q,Kならscoreに10代入
                 int tempScore = 10;
