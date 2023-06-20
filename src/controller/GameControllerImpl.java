@@ -142,7 +142,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         int n = 1;
         while (dealer.getScore(dealer.getHand()) < 17) {
             dealer.getHand().add(gameModel.drawCardFromDeck());
-            GameView.countDrawCard(n++);
+            GameView.printDrawCard(n++);
             GameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
             if (dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
                 // 何もせず次に行動を移行する
@@ -155,21 +155,21 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             // pがバーストしていないかつdがバーストしていない場合　21に近い方が勝ちもしくは同じ数字なら引き分け
             if (21 - player.getScore(player.getHand()) < 21 - dealer.getScore(dealer.getHand())) {
                 // dの方が21に近いためdの勝ち
-                GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+                GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
             } else if (21 - player.getScore(player.getHand()) > 21 - dealer.getScore(dealer.getHand())) {
-                GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+                GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
             } else {
-                GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
+                GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
             }
         } else if (player.judgeBurst(player.getScore(player.getHand())) && !dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
             // pがバーストしていてdがバーストしていない場合はdの勝ち
-            GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+            GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
         } else if (!player.judgeBurst(player.getScore(player.getHand())) && dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
             // pがバーストしていていなくてdがバーストしている場合はpの勝ち
-            GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+            GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
         } else {
             // pがバーストしていてdがバーストしていた場合はdraw
-            GameView.judgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
+            GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
         }
     }
 

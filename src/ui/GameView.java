@@ -90,7 +90,7 @@ public interface GameView {
         System.out.println(StringUtil.getEmptyRow());
     }
 
-    public static void countDrawCard(int count) {
+    public static void printDrawCard(int count) {
         String msg = count + "回目のカードを引いた結果です";
         GameView.printGameInfo(msg);
     }
@@ -101,7 +101,7 @@ public interface GameView {
         DRAW // 3.ドロー
     }
 
-    public static void judgeGame (String playerName, String dealerName, judgeGameItem item) {
+    public static void printJudgeGame (String playerName, String dealerName, judgeGameItem item) {
         if (item == judgeGameItem.DEALER_WIN) {
             String msg = dealerName + Constant.WIN_MESSAGE;
             GameView.printGameInfo(msg);
