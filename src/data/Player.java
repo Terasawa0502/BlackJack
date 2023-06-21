@@ -14,7 +14,6 @@ public class Player extends Human {
     private int pocketMoney;
     // プレイヤーの賭け金
     private int betMoney;
-
     private static Player instance;
 
     public static Player getInstance(String name, int money) {
@@ -48,8 +47,11 @@ public class Player extends Human {
 
     // 所持金表示(getter)
     public void getPocketMoney(String playerName) {
-        String msg = playerName + "さんの現在の所持金は" + pocketMoney + "$です";
-        GameView.printGameInfo(msg);
+        GameView.printPlayerInformation(playerName, this.pocketMoney);
+    }
+
+    public void setPocketMoney(int playerMoney) {
+        this.pocketMoney = playerMoney;
     }
 
     // プレイヤーの名前表示(getter)

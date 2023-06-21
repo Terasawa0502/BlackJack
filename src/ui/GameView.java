@@ -90,6 +90,10 @@ public interface GameView {
         System.out.println(StringUtil.getEmptyRow());
     }
 
+    public static void printPlayerInformation(String playerName, int pocketMoney) {
+        String msg = playerName + "さんの現在の所持金は" + pocketMoney + "$になります";
+        GameView.printGameInfo(msg);
+    }
     public static void printDrawCard(int count) {
         String msg = count + "回目のカードを引いた結果です";
         GameView.printGameInfo(msg);
@@ -113,6 +117,5 @@ public interface GameView {
         } else {
             //　// 何もせず次に行動を移行する
         }
-
     }
 }

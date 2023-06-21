@@ -18,6 +18,8 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     private Player player;
     //ディーラー
     private Dealer dealer;
+    //勝敗判定用のitem
+    GameView.judgeGameItem item = null;
 
     public GameControllerImpl(GameView view, GameModel model) {
         gameView = view;
@@ -46,9 +48,10 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         gameView.displaySecondBetAction(this);
         // ディーラーの行動に移る
         dealerAction();
-        // 勝負判定に移る
+        // 勝負判定
         judgeGame();
-        // TODO: 賭け金の精算
+        // 賭け金精算
+        calculateMoney(item);
     }
 
     @Override
@@ -110,27 +113,36 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     }
 
     /**
-     * 賭け金精算用のメソッド予定
-     * @param playerBetMoney
+     * 賭け金のセッター
+     * @param playerBetMoney 賭け金
      */
     @Override
     public void calcPlayerBetMoney(int playerBetMoney) {
         player.setBetMoney(playerBetMoney);
     }
 
+    /**
+     * 賭け金のゲッター
+     * @return 賭け金
+     */
     @Override
     public int returnPlayerBetMoney() {
         return player.getBetMoney();
     }
 
+
+    /**
+     * 所持金のゲッター
+     * @return 所持金
+     */
     @Override
     public int returnPlayerPocketMoney() {
         return player.getPocketMoney();
     }
 
     /**
-     *
-     * @param playerName
+     * 所持金を表示
+     * @param playerName プレイヤー名
      */
     @Override
     public void screenPlayerPocketMoney(String playerName) {
@@ -152,24 +164,51 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
 
     public void judgeGame() {
         if (!player.judgeBurst(player.getScore(player.getHand())) && !dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
-            // pがバーストしていないかつdがバーストしていない場合　21に近い方が勝ちもしくは同じ数字なら引き分け
+            // playerがバーストしていないかつdealerがバーストしていない場合　21に近い方が勝ちもしくは同じ数字なら引き分け
             if (21 - player.getScore(player.getHand()) < 21 - dealer.getScore(dealer.getHand())) {
-                // dの方が21に近いためdの勝ち
+                // dealerの方が21に近いためdealerの勝ち
                 GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+                item = GameView.judgeGameItem.DEALER_WIN;
             } else if (21 - player.getScore(player.getHand()) > 21 - dealer.getScore(dealer.getHand())) {
+                // playerの方が21に近いためplayerの勝ち
                 GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+                item = GameView.judgeGameItem.PLAYER_WIN;
             } else {
+                // 同値であったらdraw
                 GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
+                item = GameView.judgeGameItem.DRAW;
             }
         } else if (player.judgeBurst(player.getScore(player.getHand())) && !dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
-            // pがバーストしていてdがバーストしていない場合はdの勝ち
+            // playerがバーストしていてdealerがバーストしていない場合はdealerの勝ち
             GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+            item = GameView.judgeGameItem.DEALER_WIN;
         } else if (!player.judgeBurst(player.getScore(player.getHand())) && dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
-            // pがバーストしていていなくてdがバーストしている場合はpの勝ち
+            // playerがバーストしていていなくてdealerがバーストしている場合はplayerの勝ち
             GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+            item = GameView.judgeGameItem.PLAYER_WIN;
         } else {
-            // pがバーストしていてdがバーストしていた場合はdraw
+            // playerがバーストしていてdがバーストしていた場合はdraw
             GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
+            item = GameView.judgeGameItem.DRAW;
+        }
+    }
+
+    public void calculateMoney (GameView.judgeGameItem item) {
+        if (item == GameView.judgeGameItem.DEALER_WIN) {
+            // playerが賭け金を失う
+            // TODO: 勝敗判定をわかりやすくする文字を表示させるメソッドを呼ぶ
+            player.setPocketMoney(player.getPocketMoney()-player.getBetMoney());
+            player.getPocketMoney(player.getName());
+        } else if (item == GameView.judgeGameItem.PLAYER_WIN) {
+            // playerが賭け金を得る
+            // TODO: 勝敗判定をわかりやすくする文字を表示させるメソッドを呼ぶ
+            player.setPocketMoney(player.getPocketMoney()+player.getBetMoney());
+            player.getPocketMoney(player.getName());
+        } else if (item == GameView.judgeGameItem.DRAW) {
+            // TODO: 勝敗判定をわかりやすくする文字を表示させるメソッドを呼ぶ
+            player.getPocketMoney(player.getName());
+        } else {
+            // 何もせず次に行動を移行する
         }
     }
 
