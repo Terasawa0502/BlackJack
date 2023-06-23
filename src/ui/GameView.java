@@ -32,12 +32,14 @@ public interface GameView {
         void selectFirstBetActionCard();
         // SecondBetAction(賭け方の選択)
         void selectSecondBetActionItems(SecondBetActionItem item);
-        // 賭け金の精算
-        void calcPlayerBetMoney(int playerBetMoney);
-        // 賭け金をViewに渡す
-        int returnPlayerBetMoney();
-        // 現在の所持金をViewに渡す
-        int returnPlayerPocketMoney();
+        // プレイヤー名のゲッター
+        String getPlayerName();
+        // 賭け金のセッター
+        void setPlayerBetMoney(int playerBetMoney);
+        // 賭け金のゲッター
+        int getPlayerBetMoney();
+        // 所持金のゲッター
+        int getPlayerPocketMoney();
         // 現在の所持金を表示する
         void screenPlayerPocketMoney(String playerName);
     }

@@ -45,11 +45,6 @@ public class Player extends Human {
         this.betMoney = playerBetMoney;
     }
 
-    // 所持金表示(getter)
-    public void getPocketMoney(String playerName) {
-        GameView.printPlayerInformation(playerName, this.pocketMoney);
-    }
-
     public void setPocketMoney(int playerMoney) {
         this.pocketMoney = playerMoney;
     }

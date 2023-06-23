@@ -50,16 +50,16 @@ public abstract class Human {
         // カードスコア
         int score = 0;
         for (Card card : tempHand) {
-            if (card.getNumber().getNum() == "10" || card.getNumber().getNum() == "J" || card.getNumber().getNum() == "Q" || card.getNumber().getNum() == "K") {
+            if (card.getNumber().getNum().equals("10") || card.getNumber().getNum().equals("J") || card.getNumber().getNum().equals("Q") || card.getNumber().getNum().equals("K")) {
                 // 数字が10,J,Q,Kならscoreに10代入
                 int tempScore = 10;
                 score += tempScore ;
-            } else if (card.getNumber().getNum() != "A") {
+            } else if (!card.getNumber().getNum().equals("A") ) {
                 // 数字がA以外ならscoreにその数字を代入
                 int tempScore = Integer.parseInt(card.getNumber().getNum());
                 score += tempScore ;
             } else {
-                if (card.getNumber().getNum() == "A" && score + 11 > 21) {
+                if (card.getNumber().getNum().equals("A") && score + 11 > 21) {
                     // 数字がAでかつ21を超えるなら11ではなく1として扱う
                     int tempScore = 1;
                     score += tempScore ;
@@ -80,10 +80,6 @@ public abstract class Human {
         return isBurst;
     }
 
-    public void surrender (String humanName) {
-        String msg = "手札のスコアが21を超えたため"+humanName + "さんの負けです";
-        GameView.printGameInfo(msg);
-    }
 
 }
 

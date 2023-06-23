@@ -96,7 +96,7 @@ public class GameViewImpl implements GameView{
             System.out.println(StringUtil.alignCenter(Constant.MISS_BET_MONEY_1));
             playerBetMoney = scanner.nextInt();
         }
-        callback.calcPlayerBetMoney(playerBetMoney);
+        callback.setPlayerBetMoney(playerBetMoney);
         // カードを配る、手札を表示する
         callback.selectFirstBetActionCard();
     }
@@ -128,8 +128,8 @@ public class GameViewImpl implements GameView{
 
             System.out.println(StringUtil.getEmptyRow());
             String userInput = scanner.nextLine();
-            int tempPocketMoney = callback.returnPlayerPocketMoney();
-            int tempBetMoney = callback.returnPlayerBetMoney();
+            int tempPocketMoney = callback.getPlayerPocketMoney();
+            int tempBetMoney = callback.getPlayerBetMoney();
             String msg = null;
 
         switch (userInput) {
