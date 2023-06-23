@@ -1,13 +1,11 @@
 package ui;
 
-import controller.GameController;
-import data.Human;
 import util.Constant;
 import util.StringUtil;
 
-import java.awt.*;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.SimpleTimeZone;
 
 public class GameViewImpl implements GameView{
 
@@ -16,13 +14,13 @@ public class GameViewImpl implements GameView{
     }
     @Override
     public void displayTopScreen(OnUserInputCallback callback) {
-        // TODO: 表示処理
+        // 表示処理
         System.out.println(StringUtil.alignCenter(Constant.WELCOME));
         System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.alignCenter(Constant.GAME_MENU));
         System.out.println(StringUtil.getEmptyRow());
 
-        // TODO: 選択項目を表示する
+        // 選択項目を表示する
         System.out.println(StringUtil.getSeparator());
         System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.alignCenter(Constant.SELECT_MENU));
@@ -34,7 +32,7 @@ public class GameViewImpl implements GameView{
         System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.getSeparator());
 
-        // TODO: プレイヤーに入力させる
+        // プレイヤーに入力させる
         Scanner scanner = new Scanner(System.in);
 
         boolean entered = false;
@@ -57,6 +55,7 @@ public class GameViewImpl implements GameView{
                 default:
                     System.out.println();
                     System.out.println(StringUtil.alignCenter(Constant.MISS_SELECT));
+                    break;
             }
         } while (!entered);
         scanner.close();
@@ -64,12 +63,21 @@ public class GameViewImpl implements GameView{
 
     @Override
     public void displayFirstBetAction(OnUserInputCallback callback) {
-        // TODO: プレイヤー名を入力させる
+        // プレイヤー名を入力させる
         System.out.println(StringUtil.alignCenter(Constant.WHAT_IS_YOUR_NAME));
         Scanner scanner = new Scanner(System.in);
         String playerName = scanner.nextLine();
         System.out.println(StringUtil.alignCenter(Constant.HOW_MUCH));
-        int playerFirstMoney = scanner.nextInt();
+        int playerFirstMoney = -1;
+        do {
+            try {
+                playerFirstMoney = scanner.nextInt();
+            } catch (NoSuchElementException | IllegalStateException e) {
+                e.printStackTrace();
+                // TODO: エラーメッセージを出す
+                // TODO: エラーだったらどうするか
+            }
+        } while (playerFirstMoney == -1);
         // プレイヤー名が半角英数字ならOK
         while (!playerName.matches("^[A-Za-z0-9]*$")) {
             System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_NAME));
@@ -99,7 +107,7 @@ public class GameViewImpl implements GameView{
         System.out.println(StringUtil.alignCenter(Constant.GAME_MENU));
         System.out.println(StringUtil.getEmptyRow());
 
-        // TODO: 選択項目を表示する
+        // 選択項目を表示する
         System.out.println(StringUtil.getSeparator());
         System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_BET_MENU));
@@ -116,45 +124,37 @@ public class GameViewImpl implements GameView{
         System.out.println(StringUtil.getSeparator());
         // プレイヤーに番号を選択させる
         Scanner scanner = new Scanner(System.in);
-        boolean entered = false;
-        do {
+        SecondBetActionItem selectItem;
+
             System.out.println(StringUtil.getEmptyRow());
             String userInput = scanner.nextLine();
             int tempPocketMoney = callback.returnPlayerPocketMoney();
             int tempBetMoney = callback.returnPlayerBetMoney();
             String msg = null;
 
-            switch (userInput) {
-
-                case "1": // ヒット
-                    entered = true;
-                    callback.selectSecondBetActionItems(SecondBetActionItem.HIT_ACTION);
-                    // もう一度呼べるようにしたい
+        switch (userInput) {
+            case "1" : // ヒット
+                    selectItem = SecondBetActionItem.HIT_ACTION;
                     break;
-                case "2": // ダブル
-                    while ( (tempBetMoney * 2) > tempPocketMoney ) {
-                        msg = "ダブルするには" + (tempBetMoney*2 - tempPocketMoney) + "$たりません。";
-                        System.out.println(StringUtil.alignCenter(msg));
-                        System.out.println(StringUtil.getEmptyRow());
-                        System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_ANOTHER_BET_MENU));
-                        userInput = scanner.nextLine();
-                    }
-                    entered = true;
-                    callback.selectSecondBetActionItems(SecondBetActionItem.DOUBLE_ACTION);
+            // もう一度呼べるようにしたい
+            case "2" : // ダブル
+                while ((tempBetMoney * 2) > tempPocketMoney) {
+                    msg = "ダブルするには" + (tempBetMoney * 2 - tempPocketMoney) + "$たりません。";
+                    System.out.println(StringUtil.alignCenter(msg));
+                    System.out.println(StringUtil.getEmptyRow());
+                    System.out.println(StringUtil.alignCenter(Constant.SELECT_SECOND_ANOTHER_BET_MENU));
+                    userInput = scanner.nextLine();
+                }
+                selectItem = SecondBetActionItem.DOUBLE_ACTION;
+                break;
+            case "3" : // スタンド
+                    selectItem = SecondBetActionItem.STAND_ACTION;
                     break;
-                case "3": // スタンド
-                    entered = true;
-                    callback.selectSecondBetActionItems(SecondBetActionItem.STAND_ACTION);
-                    break;
-                case "4": // ドロップ
-                    entered = true;
-                    callback.selectSecondBetActionItems(SecondBetActionItem.DROP_ACTION);
-                    break;
-            }
-        } while (!entered);
-    scanner.close();
-    // TODO: ヒットしてからスタンドに変えるときヒットの回数だけ表示される？
-    System.out.println(StringUtil.alignCenter(Constant.TRANSFER_DEALER));
-    System.out.println(StringUtil.getEmptyRow());
+            // ドロップ
+            default : selectItem = SecondBetActionItem.DROP_ACTION;
+        }
+        callback.selectSecondBetActionItems(selectItem);
+        scanner.close();
     }
+
 }
