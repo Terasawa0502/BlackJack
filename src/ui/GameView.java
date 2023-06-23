@@ -59,63 +59,22 @@ public interface GameView {
         STAND_ACTION, //3.スタンド
         DROP_ACTION //4.ドロップ
     }
+    // コンソールにただ表示するようメソッド
+    public void printGameInfo(String information);
+    // 人間の手札情報表示
+    public void printGameHand(String humanName, String information, int humanScore);
+    // プレイヤーの所持金を表示するメソッド
+    public void printPlayerInformation(String playerName, int pocketMoney);
+    // ディーラーが何回目に引いたかを表示するメソッド
+    public void printDrawCard(int count);
+    // 勝負判定を表示するメソッド
+    public void printJudgeGame (String playerName, String dealerName, judgeGameItem item);
 
-    /**
-     * コンソールにただ表示するようメソッド
-     * @param information 情報
-     */
-    public static void printGameInfo(String information) {
-        System.out.println(StringUtil.alignCenter(information));
-    }
-
-    /**
-     * 人間の手札情報表示
-     * @param humanName 人間の名前
-     * @param information 人間の手札
-     * @param humanScore 人間の手札のスコア表示
-     */
-    public static void printGameHand(String humanName, String information, int humanScore) {
-        String msg1 = humanName + "さんの手札";
-        System.out.println(StringUtil.alignCenter(msg1));
-        printGameInfo(information);
-        if (humanScore == 21) {
-            String score = String.valueOf(humanScore);
-            String msg2 = "カードスコア ： " + humanScore + Constant.BLACKJACK;
-            GameView.printGameInfo(msg2);
-        } else {
-            String score = String.valueOf(humanScore);
-            String msg2 = "カードスコア ： " + humanScore;
-            GameView.printGameInfo(msg2);
-        }
-        System.out.println(StringUtil.getEmptyRow());
-    }
-
-    public static void printPlayerInformation(String playerName, int pocketMoney) {
-        String msg = playerName + "さんの現在の所持金は" + pocketMoney + "$になります";
-        GameView.printGameInfo(msg);
-    }
-    public static void printDrawCard(int count) {
-        String msg = count + "回目のカードを引いた結果です";
-        GameView.printGameInfo(msg);
-    }
-
+    // 勝負判定アイテム
     public enum judgeGameItem {
         PLAYER_WIN, // 1.プレイヤーの勝利
         DEALER_WIN, // 2.ディーラーの勝利
         DRAW // 3.ドロー
     }
 
-    public static void printJudgeGame (String playerName, String dealerName, judgeGameItem item) {
-        if (item == judgeGameItem.DEALER_WIN) {
-            String msg = dealerName + Constant.WIN_MESSAGE;
-            GameView.printGameInfo(msg);
-        } else if (item == judgeGameItem.PLAYER_WIN) {
-            String msg = playerName + Constant.WIN_MESSAGE;
-            GameView.printGameInfo(msg);
-        } else if (item == judgeGameItem.DRAW) {
-            GameView.printGameInfo(Constant.DRAW_MESSAGE);
-        } else {
-            //　// 何もせず次に行動を移行する
-        }
-    }
 }

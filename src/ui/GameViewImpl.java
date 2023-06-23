@@ -157,4 +157,78 @@ public class GameViewImpl implements GameView{
         scanner.close();
     }
 
+    /**
+     * コンソールにただ表示するようメソッド
+     * @param information 情報
+     */
+    @Override
+    public void printGameInfo(String information) {
+        System.out.println(StringUtil.alignCenter(information));
+    }
+
+    /**
+     * 人間の手札情報表示
+     * @param humanName 人間の名前
+     * @param information 人間の手札
+     * @param humanScore 人間の手札のスコア表示
+     */
+    @Override
+    public void printGameHand(String humanName, String information, int humanScore) {
+        String msg1 = humanName + "さんの手札";
+        System.out.println(StringUtil.alignCenter(msg1));
+        printGameInfo(information);
+        if (humanScore == 21) {
+            String score = String.valueOf(humanScore);
+            String msg2 = "カードスコア ： " + humanScore + Constant.BLACKJACK;
+            printGameInfo(msg2);
+        } else {
+            String score = String.valueOf(humanScore);
+            String msg2 = "カードスコア ： " + humanScore;
+            printGameInfo(msg2);
+        }
+        System.out.println(StringUtil.getEmptyRow());
+    }
+
+    /**
+     * プレイヤーの所持金を表示するメソッド
+     * @param playerName プレイヤー名
+     * @param pocketMoney 所持金
+     */
+    @Override
+    public void printPlayerInformation(String playerName, int pocketMoney) {
+        String msg = playerName + "さんの現在の所持金は" + pocketMoney + "$になります";
+        printGameInfo(msg);
+    }
+
+    /**
+     * ディーラーが何回目に引いたかを表示するメソッド
+     * @param count ディーラーのドロー回数
+     */
+    @Override
+    public void printDrawCard(int count) {
+        String msg = count + "回目のカードを引いた結果です";
+        printGameInfo(msg);
+    }
+
+    /**
+     * 勝負判定を表示するメソッド
+     * @param playerName プレイヤー名
+     * @param dealerName ディーラー名
+     * @param item 勝利条件
+     */
+    @Override
+    public void printJudgeGame(String playerName, String dealerName, judgeGameItem item) {
+        if (item == judgeGameItem.DEALER_WIN) {
+            String msg = dealerName + Constant.WIN_MESSAGE;
+            printGameInfo(msg);
+        } else if (item == judgeGameItem.PLAYER_WIN) {
+            String msg = playerName + Constant.WIN_MESSAGE;
+            printGameInfo(msg);
+        } else if (item == judgeGameItem.DRAW) {
+            printGameInfo(Constant.DRAW_MESSAGE);
+        } else {
+            //　// 何もせず次に行動を移行する
+        }
+    }
+
 }
