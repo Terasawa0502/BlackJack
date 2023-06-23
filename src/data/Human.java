@@ -41,12 +41,7 @@ public abstract class Human {
         for (Card tempcard: hand ) {
             tempHand.add(tempcard);
         }
-        Collections.sort(tempHand, new Comparator<Card>() {
-            @Override
-            public int compare(Card value1, Card value2) {
-                return (value2.getNumber().getScore() - value1.getNumber().getScore());
-            }
-        });
+        Collections.sort(tempHand, (value1, value2) -> (value2.getNumber().getScore() - value1.getNumber().getScore()));
         // カードスコア
         int score = 0;
         for (Card card : tempHand) {
