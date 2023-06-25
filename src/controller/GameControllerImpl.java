@@ -17,7 +17,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     // ゲーム終了用のコールバック
     private OnFinishListener listener;
 
-    //勝敗判定用のitem
+    //勝負判定用のitem
     GameView.judgeGameItem item = null;
 
     public GameControllerImpl(GameView view, GameModel model) {
