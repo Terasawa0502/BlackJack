@@ -23,4 +23,6 @@ public interface BlackJackGame {
         USER_CHOOSES, // ユーザが選択
         RUNTIME_ERROR // 実行時エラー
     }
+
+
 }

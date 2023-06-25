@@ -2,28 +2,27 @@ package controller;
 
 import data.*;
 import data.model.GameModel;
-import data.model.GameModelImpl;
 import util.*;
 import ui.GameView;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
-import java.util.List;
-
 public class GameControllerImpl implements GameController, GameView.OnUserInputCallback{
     // Game表示用
-    private GameView gameView;
+    private final GameView gameView;
     //Gameデータ管理用
-    private GameModel gameModel;
+    private  final GameModel gameModel;
     //プレイヤー
     private Player player;
     //ディーラー
     private Dealer dealer;
+    // ゲーム終了用のコールバック
+    private OnFinishListener listener;
+
     //勝敗判定用のitem
     GameView.judgeGameItem item = null;
 
     public GameControllerImpl(GameView view, GameModel model) {
         gameView = view;
-        this.gameModel = new GameModelImpl();
+        gameModel = model;
     }
 
     /**
@@ -55,6 +54,11 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     }
 
     @Override
+    public void setOnFinishListener(OnFinishListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
     public void selectTopScreenItems(GameView.TopScreenItem item) {
         // TODO: TOP画面でユーザが選択した項目によって次の処理をする
         if (item == GameView.TopScreenItem.GAME_START) {
@@ -63,14 +67,19 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         } else if (item == GameView.TopScreenItem.GAME_FINISH) {
             // FINISH
             // TODO: 終了処理
+            if (listener != null) {
+                listener.onFinish();
+            }
+
+
         }
     }
 
-    public void selectFirstBetAction(String playerName, int playerMoney) {
+    public void selectFirstBetAction(String playerName, int playerFirstMoney) {
         // プレイヤーの所持金を表示させるメソッドをゲームモデルから呼び出す
         //プレイヤー作成//
-        this.player = Player.getInstance(playerName, playerMoney);
-        player.getPocketMoney(playerName);
+        this.player = Player.getInstance(playerName, playerFirstMoney);
+        gameView.printPlayerInformation(playerName,playerFirstMoney);
     }
 
     /**
@@ -82,8 +91,8 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         player.getHand().add(gameModel.drawCardFromDeck());
         player.getHand().add(gameModel.drawCardFromDeck());
         dealer.getHand().add(gameModel.drawCardFromDeck());
-        GameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
-        GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
+        gameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
+        gameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
     }
 
     @Override
@@ -92,10 +101,12 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         if (item == GameView.SecondBetActionItem.HIT_ACTION) {
             // プレイヤーが賭け金をそのままにBurstするまで手札を加えれる
             player.getHand().add(gameModel.drawCardFromDeck());
-            GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
+            gameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
             // 手札が21を超えていないかを判断させる
             if (player.judgeBurst(player.getScore(player.getHand()))) {
                 // 何もせず次に行動を移行する
+                // TODO: ヒットしてからスタンドに変えるときヒットの回数だけ表示される？
+                gameView.printDealerTurn();
             } else {
                 gameView.displaySecondBetAction(this);
             }
@@ -103,9 +114,12 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             // プレイヤーが賭け金を2倍にできるが1枚しか引けない
             player.setBetMoney(player.getBetMoney()*2);
             player.getHand().add(gameModel.drawCardFromDeck());
-            GameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
+            gameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
         } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
             // 何もせず次に行動を移行する
+            // TODO: ヒットしてからスタンドに変えるときヒットの回数だけ表示される？
+            gameView.printDealerTurn();
+
         } else if (item == GameView.SecondBetActionItem.DROP_ACTION) {
             // TODO: スタート画面に戻る
             startUp();
@@ -113,11 +127,19 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     }
 
     /**
+     * プレイヤー名のゲッター
+     */
+    @Override
+    public String getPlayerName() {
+        return player.getName();
+    }
+
+    /**
      * 賭け金のセッター
      * @param playerBetMoney 賭け金
      */
     @Override
-    public void calcPlayerBetMoney(int playerBetMoney) {
+    public void setPlayerBetMoney(int playerBetMoney) {
         player.setBetMoney(playerBetMoney);
     }
 
@@ -126,7 +148,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      * @return 賭け金
      */
     @Override
-    public int returnPlayerBetMoney() {
+    public int getPlayerBetMoney() {
         return player.getBetMoney();
     }
 
@@ -136,7 +158,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      * @return 所持金
      */
     @Override
-    public int returnPlayerPocketMoney() {
+    public int getPlayerPocketMoney() {
         return player.getPocketMoney();
     }
 
@@ -146,7 +168,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
      */
     @Override
     public void screenPlayerPocketMoney(String playerName) {
-        player.getPocketMoney(playerName);
+        gameView.printPlayerInformation(getPlayerName(), getPlayerPocketMoney());
     }
 
     public void dealerAction () {
@@ -154,8 +176,8 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
         int n = 1;
         while (dealer.getScore(dealer.getHand()) < 17) {
             dealer.getHand().add(gameModel.drawCardFromDeck());
-            GameView.printDrawCard(n++);
-            GameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
+            gameView.printDrawCard(n++);
+            gameView.printGameHand(dealer.getName(), dealer.allHandOpen(), dealer.getScore(dealer.getHand()));
             if (dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
                 // 何もせず次に行動を移行する
             }
@@ -165,30 +187,30 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     public void judgeGame() {
         if (!player.judgeBurst(player.getScore(player.getHand())) && !dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
             // playerがバーストしていないかつdealerがバーストしていない場合　21に近い方が勝ちもしくは同じ数字なら引き分け
-            if (21 - player.getScore(player.getHand()) < 21 - dealer.getScore(dealer.getHand())) {
+            if (21 - player.getScore(player.getHand()) > 21 - dealer.getScore(dealer.getHand())) {
                 // dealerの方が21に近いためdealerの勝ち
-                GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+                gameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
                 item = GameView.judgeGameItem.DEALER_WIN;
-            } else if (21 - player.getScore(player.getHand()) > 21 - dealer.getScore(dealer.getHand())) {
+            } else if (21 - player.getScore(player.getHand()) < 21 - dealer.getScore(dealer.getHand())) {
                 // playerの方が21に近いためplayerの勝ち
-                GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+                gameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
                 item = GameView.judgeGameItem.PLAYER_WIN;
             } else {
                 // 同値であったらdraw
-                GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
+                gameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
                 item = GameView.judgeGameItem.DRAW;
             }
         } else if (player.judgeBurst(player.getScore(player.getHand())) && !dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
             // playerがバーストしていてdealerがバーストしていない場合はdealerの勝ち
-            GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
+            gameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DEALER_WIN);
             item = GameView.judgeGameItem.DEALER_WIN;
         } else if (!player.judgeBurst(player.getScore(player.getHand())) && dealer.judgeBurst(dealer.getScore(dealer.getHand()))) {
             // playerがバーストしていていなくてdealerがバーストしている場合はplayerの勝ち
-            GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
+            gameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.PLAYER_WIN);
             item = GameView.judgeGameItem.PLAYER_WIN;
         } else {
             // playerがバーストしていてdがバーストしていた場合はdraw
-            GameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
+            gameView.printJudgeGame(player.getName(), dealer.getName(), GameView.judgeGameItem.DRAW);
             item = GameView.judgeGameItem.DRAW;
         }
     }
@@ -198,15 +220,15 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             // playerが賭け金を失う
             // TODO: 勝敗判定をわかりやすくする文字を表示させるメソッドを呼ぶ
             player.setPocketMoney(player.getPocketMoney()-player.getBetMoney());
-            player.getPocketMoney(player.getName());
+            gameView.printPlayerInformation(getPlayerName(), getPlayerPocketMoney());
         } else if (item == GameView.judgeGameItem.PLAYER_WIN) {
             // playerが賭け金を得る
             // TODO: 勝敗判定をわかりやすくする文字を表示させるメソッドを呼ぶ
             player.setPocketMoney(player.getPocketMoney()+player.getBetMoney());
-            player.getPocketMoney(player.getName());
+            gameView.printPlayerInformation(getPlayerName(), getPlayerPocketMoney());
         } else if (item == GameView.judgeGameItem.DRAW) {
             // TODO: 勝敗判定をわかりやすくする文字を表示させるメソッドを呼ぶ
-            player.getPocketMoney(player.getName());
+            gameView.printPlayerInformation(getPlayerName(), getPlayerPocketMoney());
         } else {
             // 何もせず次に行動を移行する
         }

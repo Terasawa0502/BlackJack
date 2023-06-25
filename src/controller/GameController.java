@@ -15,4 +15,10 @@ public interface GameController {
      * ゲーム開始メソッド
      */
     void startGame();
+
+    void setOnFinishListener(OnFinishListener listener);
+
+    interface OnFinishListener {
+        void onFinish();
+    }
 }

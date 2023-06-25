@@ -8,7 +8,6 @@ public class Main {
             switch (reason) {
                 case USER_CHOOSES:
                     System.exit(0);
-                    // TODO: 未実装
                     break;
                 case RUNTIME_ERROR:
                     // TODO: 未実装

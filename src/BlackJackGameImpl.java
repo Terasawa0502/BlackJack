@@ -13,6 +13,9 @@ public class BlackJackGameImpl implements BlackJackGame{
 
     public BlackJackGameImpl () {
         gameController = new GameControllerImpl(new GameViewImpl(), new GameModelImpl());
+        gameController.setOnFinishListener(() -> {
+            finish(Reason.USER_CHOOSES);
+        });
     }
     @Override
     public void exec(OnFinishListener listener) {
