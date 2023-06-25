@@ -71,6 +71,8 @@ public interface GameView {
     public void printDrawCard(int count);
     // 勝負判定を表示するメソッド
     public void printJudgeGame (String playerName, String dealerName, judgeGameItem item);
+    // ディーラーに行動移行用
+    public void printDealerTurn();
 
     // 勝負判定アイテム
     public enum judgeGameItem {

@@ -231,4 +231,12 @@ public class GameViewImpl implements GameView{
         }
     }
 
+    // ディーラーに行動移行用
+    @Override
+    public void printDealerTurn() {
+        System.out.println(StringUtil.alignCenter(Constant.TRANSFER_DEALER));
+        System.out.println(StringUtil.getEmptyRow());
+    }
+
+
 }
