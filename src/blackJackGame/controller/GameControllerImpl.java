@@ -1,9 +1,9 @@
-package controller;
+package blackJackGame.controller;
 
-import data.*;
-import data.model.GameModel;
-import util.*;
-import ui.GameView;
+import blackJackGame.BlackJackGame;
+import blackJackGame.data.*;
+import blackJackGame.data.model.GameModel;
+import blackJackGame.ui.GameView;
 
 public class GameControllerImpl implements GameController, GameView.OnUserInputCallback{
     // Game表示用
@@ -68,10 +68,8 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             // FINISH
             // TODO: 終了処理
             if (listener != null) {
-                listener.onFinish();
+                listener.onFinish(BlackJackGame.Reason.USER_CHOOSES);
             }
-
-
         }
     }
 
@@ -117,7 +115,7 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
             gameView.printGameHand(player.getName(), player.allHandOpen(), player.getScore(player.getHand()));
         } else if (item == GameView.SecondBetActionItem.STAND_ACTION) {
             // 何もせず次に行動を移行する
-            // TODO: ヒットしてからスタンドに変えるときヒットの回数だけ表示される？
+            // ヒットしてからスタンドに変えるときヒットの回数だけ表示される
             gameView.printDealerTurn();
 
         } else if (item == GameView.SecondBetActionItem.DROP_ACTION) {
@@ -151,7 +149,6 @@ public class GameControllerImpl implements GameController, GameView.OnUserInputC
     public int getPlayerBetMoney() {
         return player.getBetMoney();
     }
-
 
     /**
      * 所持金のゲッター

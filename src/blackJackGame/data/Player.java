@@ -1,8 +1,5 @@
-package data;
+package blackJackGame.data;
 
-import data.model.GameModel;
-import ui.*;
-import util.*;
 public class Player extends Human {
     /**
      * フィールド

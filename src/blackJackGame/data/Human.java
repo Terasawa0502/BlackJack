@@ -1,11 +1,8 @@
-package data;
+package blackJackGame.data;
 
-import ui.GameView;
-import util.Constant;
+import blackJackGame.util.Constant;
 
-import java.awt.*;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 

@@ -1,9 +1,6 @@
-package controller;
+package blackJackGame.controller;
 
-import data.*;
-
-import java.awt.*;
-import java.util.List;
+import blackJackGame.BlackJackGame;
 
 public interface GameController {
     /**
@@ -19,6 +16,6 @@ public interface GameController {
     void setOnFinishListener(OnFinishListener listener);
 
     interface OnFinishListener {
-        void onFinish();
+        void onFinish(BlackJackGame.Reason reason);
     }
 }

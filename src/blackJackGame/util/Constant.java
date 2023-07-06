@@ -1,4 +1,4 @@
-package util;
+package blackJackGame.util;
 
 public class Constant {
 
@@ -28,6 +28,7 @@ public class Constant {
     public static final String MISS_SELECT = "入力された文字が正しくありません \nもう一度入力してください";
     public static final String WHAT_IS_YOUR_NAME = "あなたの名前を半角英数字で入力してください";
     public static final String HOW_MUCH = "あなたの所持金を半角数字で入力してください";
+    public static final String MISS_IS_YOUR_MONEY = "入力された所持金が正しくありません。所持金は半角数字で入力してください";
     public static final String MISS_IS_YOUR_NAME = "入力された名前が正しくありません。名前は半角英数字で入力してください";
     public static final String BET_MONEY = "この勝負に賭ける金額を教えてください";
     public static final String MISS_BET_MONEY_1 = "所持金の範囲内で再度入力してください";

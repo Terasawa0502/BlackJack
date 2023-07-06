@@ -1,4 +1,4 @@
-package data;
+package blackJackGame.data;
 
 import java.util.*;
 

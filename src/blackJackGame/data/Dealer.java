@@ -1,4 +1,4 @@
-package data;
+package blackJackGame.data;
 
 public class Dealer extends Human{
 

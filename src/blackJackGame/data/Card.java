@@ -1,6 +1,6 @@
-package data;
+package blackJackGame.data;
 
-import util.*;
+import blackJackGame.util.*;
 
 public class Card {
 

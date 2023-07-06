@@ -1,9 +1,9 @@
-import controller.GameController;
-import controller.GameControllerImpl;
-import data.model.GameModelImpl;
-import ui.GameViewImpl;
+package blackJackGame;
 
-import java.rmi.server.ObjID;
+import blackJackGame.controller.GameController;
+import blackJackGame.controller.GameControllerImpl;
+import blackJackGame.data.model.GameModelImpl;
+import blackJackGame.ui.GameViewImpl;
 
 public class BlackJackGameImpl implements BlackJackGame{
    //終了用処理
@@ -13,8 +13,9 @@ public class BlackJackGameImpl implements BlackJackGame{
 
     public BlackJackGameImpl () {
         gameController = new GameControllerImpl(new GameViewImpl(), new GameModelImpl());
-        gameController.setOnFinishListener(() -> {
-            finish(Reason.USER_CHOOSES);
+        gameController.setOnFinishListener( reason -> {
+            finish(reason);
+
         });
     }
     @Override

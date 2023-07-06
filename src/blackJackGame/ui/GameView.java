@@ -1,8 +1,4 @@
-package ui;
-
-import controller.GameController;
-import util.Constant;
-import util.StringUtil;
+package blackJackGame.ui;
 
 public interface GameView {
 

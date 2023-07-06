@@ -1,6 +1,6 @@
-package data.model;
+package blackJackGame.data.model;
 
-import data.Card;
+import blackJackGame.data.Card;
 
 public interface GameModel {
 

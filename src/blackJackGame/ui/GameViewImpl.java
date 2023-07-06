@@ -1,14 +1,14 @@
-package ui;
+package blackJackGame.ui;
 
-import util.Constant;
-import util.StringUtil;
+import blackJackGame.util.Constant;
+import blackJackGame.util.StringUtil;
 
-import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class GameViewImpl implements GameView{
 
+    private Scanner scanner = new Scanner(System.in);
     public GameViewImpl() {
 
     }
@@ -31,9 +31,6 @@ public class GameViewImpl implements GameView{
         // 空白
         System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.getSeparator());
-
-        // プレイヤーに入力させる
-        Scanner scanner = new Scanner(System.in);
 
         boolean entered = false;
         do {
@@ -65,36 +62,20 @@ public class GameViewImpl implements GameView{
     public void displayFirstBetAction(OnUserInputCallback callback) {
         // プレイヤー名を入力させる
         System.out.println(StringUtil.alignCenter(Constant.WHAT_IS_YOUR_NAME));
-        Scanner scanner = new Scanner(System.in);
-        String playerName = scanner.nextLine();
+        String playerName = userInputName(scanner);
         System.out.println(StringUtil.alignCenter(Constant.HOW_MUCH));
-        int playerFirstMoney = -1;
-        do {
-            try {
-                playerFirstMoney = scanner.nextInt();
-            } catch (NoSuchElementException | IllegalStateException e) {
-                e.printStackTrace();
-                // TODO: エラーメッセージを出す
-                // TODO: エラーだったらどうするか
-            }
-        } while (playerFirstMoney == -1);
-        // プレイヤー名が半角英数字ならOK
-        while (!playerName.matches("^[A-Za-z0-9]*$")) {
-            System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_NAME));
-            playerName = scanner.nextLine();
-            playerFirstMoney = scanner.nextInt();
-        }
+        int playerFirstMoney = userInputMoney(scanner);
         // GameコントローラのselectFirstBetActionメソッドにプレイヤー名を渡す
         callback.selectFirstBetAction(playerName, playerFirstMoney);
         // 賭け金を入力させる
         System.out.println(StringUtil.getEmptyRow());
         System.out.println(StringUtil.alignCenter(Constant.BET_MONEY));
-        int playerBetMoney = scanner.nextInt();
+        int playerBetMoney = userInputMoney(scanner);
         // 0$以上100ドル未満
         while (playerBetMoney <= 0 || playerBetMoney > playerFirstMoney) {
             callback.screenPlayerPocketMoney(playerName);
             System.out.println(StringUtil.alignCenter(Constant.MISS_BET_MONEY_1));
-            playerBetMoney = scanner.nextInt();
+            playerBetMoney = userInputMoney(scanner);
         }
         callback.setPlayerBetMoney(playerBetMoney);
         // カードを配る、手札を表示する
@@ -238,5 +219,30 @@ public class GameViewImpl implements GameView{
         System.out.println(StringUtil.getEmptyRow());
     }
 
+    private int userInputMoney(Scanner scanner) {
+        int userMoney = -1;
+        do {
+            try {
+                userMoney = scanner.nextInt();
+            } catch (NoSuchElementException | IllegalStateException e) {
+                System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_MONEY));
+                scanner.next();
+            }
+        } while (userMoney == -1);
+        return userMoney;
+    }
 
+    private String userInputName(Scanner scanner) {
+        String userName = "";
+        do {
+            try {
+                userName = scanner.nextLine();
+            } catch (NoSuchElementException | IllegalStateException e) {
+                e.printStackTrace();
+                System.out.println(StringUtil.alignCenter(Constant.MISS_IS_YOUR_NAME));
+                scanner.next();
+            }
+        } while (userName.equals("") || !userName.matches("^[A-Za-z0-9]*$"));
+        return userName;
+    }
 }

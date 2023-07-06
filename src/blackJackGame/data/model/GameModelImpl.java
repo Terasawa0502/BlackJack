@@ -1,12 +1,7 @@
-package data.model;
+package blackJackGame.data.model;
 
-import data.Card;
-import data.Dealer;
-import data.Deck;
-import data.Player;
-import util.StringUtil;
-
-import java.awt.*;
+import blackJackGame.data.Card;
+import blackJackGame.data.Deck;
 
 public class GameModelImpl implements GameModel{
 
